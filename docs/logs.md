@@ -24,3 +24,14 @@ Cada entrada de log deberá incluir, como mínimo:
 ## Ejemplo de línea de log
 ```text
 2026-05-11T17:22:10 usuario 158.xx.xx.xx AlumnoAsignaturasServlet GET
+Persistencia
+
+Se prevé una versión persistente del log, almacenada en fichero.
+
+Configuración
+
+La ruta del fichero de logs deberá configurarse desde web.xml, de forma que el filtro pueda acceder a ella como parámetro de configuración o contexto.
+
+Estado actual
+
+Durante la sesión 3 se ha dejado creada la clase LogsFilter.java, quedando pendiente su implementación efectiva y su integración completa en web.xml.
