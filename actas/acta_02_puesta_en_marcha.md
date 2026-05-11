@@ -23,6 +23,8 @@
 
 ---
 
+## 3. Desarrollo de la reunión
+
 ## 2. Orden del día
 
 1. Revisión de acuerdos pendientes de la sesión 1
@@ -35,8 +37,6 @@
 8. Ruegos y preguntas
 
 ---
-
-## 3. Desarrollo de la reunión
 
 ### 3.1. Revisión de pendientes de la sesión 1
 
