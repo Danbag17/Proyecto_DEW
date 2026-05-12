@@ -1,11 +1,10 @@
-
 # memoria.md
 
-## Memoria técnica breve – Hito 1
+## Memoria técnica – Hito 1
 
 ### 1. Introducción
 
-Este documento resume el estado del proyecto **Proyecto_DEW** correspondiente al laboratorio 2 de la asignatura **Desarrollo Web (DEW)** del curso **2025/2026**.
+Este documento resume el estado del proyecto **nol2526** correspondiente al Laboratorio 2 de la asignatura **Desarrollo Web (DEW)** del curso **2025/2026**.
 
 El objetivo del proyecto es desarrollar una aplicación web de consulta y gestión académica basada en servlets Java, con autenticación, control de acceso por roles, registro de uso mediante logs e integración con un nivel de datos externo proporcionado a través de servicios REST.
 
@@ -17,43 +16,45 @@ El proyecto se ha desarrollado en equipo dentro del grupo **G14 – 3TI21**, sig
 
 Durante las primeras sesiones se priorizó:
 
-- la constitución del equipo
-- la organización del repositorio compartido
+- la constitución del equipo y la organización del repositorio
 - la creación de la estructura base del proyecto
 - la definición del alcance funcional del Hito 1
-- el reparto de responsabilidades entre integrantes
+- el reparto y reajuste de responsabilidades entre integrantes
 
-Posteriormente, el trabajo se orientó a dejar preparada una base técnica común sobre la que poder implementar la parte funcional del proyecto.
+Posteriormente el trabajo se orientó a dejar preparada una base técnica común sobre la que poder implementar la parte funcional del proyecto.
 
 ---
 
 ### 3. Entorno técnico
 
-El proyecto se ha preparado para ejecutarse sobre el siguiente entorno:
+| Componente | Versión |
+|---|---|
+| Servidor de aplicaciones | Apache Tomcat v10.1 |
+| Entorno Java | Java Runtime Environment v25 |
+| IDE principal | Eclipse |
+| Repositorio compartido | GitHub — https://github.com/Danbag17/DEW |
+| Paquete Java base | `dew` |
 
-- **Servidor de aplicaciones:** Apache Tomcat v10.1
-- **Entorno Java:** Java Runtime Environment v25
-- **IDE principal:** Eclipse
-- **Paquete Java base:** `dew`
-
-Se ha utilizado GitHub como repositorio compartido del grupo y se ha acordado trabajar mediante ramas individuales para facilitar el desarrollo paralelo.
+Se ha acordado trabajar mediante ramas individuales para facilitar el desarrollo paralelo, integrando progresivamente en `master`.
 
 ---
 
 ### 4. Estructura del proyecto
 
-La estructura general del repositorio se ha organizado del siguiente modo:
+**Repositorio GitHub:**
 
-```text
+```
 actas/
 docs/
 scripts/
 config/
 entregas/
 src/
+```
 
-La estructura interna del proyecto Java web se ha organizado en torno a:
+**Proyecto Java web (`nol2526`):**
 
+```
 src/main/java/dew/
     client/
     filters/
@@ -67,108 +68,128 @@ src/main/webapp/
     img/
     META-INF/
     WEB-INF/
-5. Elementos preparados
+    WEB-INF/web.xml
+    index.html
+    css/app.css
+```
 
-A fecha del Hito 1, se han dejado creados o iniciados los siguientes elementos principales:
+---
 
-Parte Java
-CentroEducativoClient.java
-LogsFilter.java
-AlumnoAsignaturasServlet.java
-AlumnoDetalleServlet.java
-AlumnoExpedienteServlet.java
-LoginRedirectServlet.java
-LogoutServlet.java
-SessionsUtils.java
-Parte web
-index.html
-css/app.css
-WEB-INF/web.xml
-Documentación
-actas de las reuniones
-documentación funcional y técnica en docs/
-6. Alcance funcional del Hito 1
+### 5. Elementos preparados a fecha del Hito 1
 
-Para el Hito 1 se ha priorizado el flujo correspondiente al alumnado. En concreto, se ha definido como objetivo mínimo:
+**Clases Java:**
 
-autenticación del usuario
-navegación del alumno
-consulta de asignaturas
-consulta del detalle o nota de una asignatura
-logout
-sistema de logs
-integración mínima con CentroEducativo
-documentación técnica y organizativa
+| Clase | Paquete | Responsable |
+|---|---|---|
+| `CentroEducativoClient.java` | `dew.client` | Carlos / Michal |
+| `LogsFilter.java` | `dew.filters` | Mikel |
+| `AlumnoAsignaturasServlet.java` | `dew.servlets` | Carlos |
+| `AlumnoDetalleServlet.java` | `dew.servlets` | Carlos |
+| `AlumnoExpedienteServlet.java` | `dew.servlets` | Carlos |
+| `LoginRedirectServlet.java` | `dew.servlets` | Carlos |
+| `LogoutServlet.java` | `dew.servlets` | Carlos |
+| `SessionsUtils.java` | `dew.util` | Vanesa |
 
-La parte correspondiente al profesorado queda prevista estructuralmente, pero no constituye la prioridad principal de esta primera entrega.
+**Archivos web:**
 
-7. Seguridad y roles
+| Archivo | Responsable |
+|---|---|
+| `index.html` | Pau |
+| `css/app.css` | Pau |
+| `WEB-INF/web.xml` | Daniel |
 
-Se han definido dos roles principales dentro del sistema:
+---
 
-rolalu
-rolpro
+### 6. Reparto de tareas — Hito 1
 
-La seguridad de la aplicación se apoyará en:
+| Integrante | Responsabilidad |
+|---|---|
+| Carlos Moldes Peña | Servlets del alumno + operaciones GET en `CentroEducativoClient` |
+| Michal Pojnar | Servlets del profesor + operaciones POST/PUT en `CentroEducativoClient` |
+| Pau Oroval González | Todas las vistas HTML/CSS con Bootstrap 5 |
+| Mikel Escudero Aramburu | `LogsFilter` versión 2 completo y operativo |
+| Daniel Zanon Barney | `web.xml` completo + `tomcat-users.xml` |
+| Vanesa Carolina Castro Bello | `SessionsUtils.java` + redacción de actas |
 
-autenticación mediante Tomcat
-configuración declarativa en web.xml
-comprobaciones complementarias dentro de los servlets cuando sea necesario
+---
 
-Asimismo, se ha previsto el uso de sesión para almacenar la información mínima necesaria para la integración con el nivel de datos externo.
+### 7. Alcance funcional del Hito 1
 
-8. Logs
+Se ha priorizado el flujo del alumnado. Objetivo mínimo acordado:
 
-Se ha previsto la implementación de un filtro LogsFilter encargado de registrar el uso de la aplicación.
+- Autenticación del usuario con Tomcat
+- Navegación del alumno: asignaturas → detalle → expediente
+- Logout
+- Sistema de logs (filtro v2)
+- Integración mínima con CentroEducativo
+- Documentación técnica y organizativa
 
-Cada entrada de log deberá incluir, como mínimo:
+La parte del profesorado queda prevista estructuralmente, pero no constituye la prioridad de esta entrega.
 
-fecha y hora
-usuario
-IP del cliente
-recurso o servlet accedido
-método HTTP
+---
 
-Se ha acordado que este sistema de registro sea persistente y configurable desde web.xml.
+### 8. Seguridad y roles
 
-9. Integración con CentroEducativo
+Roles definidos: `rolalu` y `rolpro`.
 
-El proyecto no se conecta directamente a una base de datos propia, sino que debe integrarse con el nivel de datos proporcionado mediante servicios REST.
+La seguridad se apoya en:
 
-Para ello se ha previsto una clase cliente específica, CentroEducativoClient.java, encargada de centralizar operaciones como:
+- Autenticación mediante Tomcat
+- Configuración declarativa en `web.xml`
+- Comprobaciones programáticas en los servlets cuando sea necesario
 
-login
-obtención de la key
-consulta de asignaturas
-consulta del detalle académico
-otras operaciones necesarias según avance el proyecto
-10. Organización del trabajo
+En sesión se almacenan: `dni`, `password` y `key`, gestionados a través de `SessionsUtils`.
 
-Durante la sesión 3 se revisó y concretó el reparto de tareas del grupo para afrontar la entrega del Hito 1, asignando bloques específicos de trabajo a cada integrante en función de las necesidades reales del proyecto.
+---
 
-También se acordó trabajar mediante ramas individuales, con integración posterior, fijando previamente una base común de nombres de clases, responsabilidades y elementos compartidos para evitar inconsistencias funcionales.
+### 9. Sistema de logs
 
-11. Estado actual
+Se implementa mediante el filtro `LogsFilter` (versión 2). Cada entrada registra:
 
-A fecha de redacción de esta memoria, el proyecto dispone ya de:
+- Fecha y hora
+- DNI del usuario
+- IP del cliente
+- Recurso accedido
+- Método HTTP
 
-repositorio operativo
-estructura base del proyecto creada
-paquetes y clases iniciales preparados
-entorno técnico común validado
-documentación base iniciada
-reparto de trabajo actualizado
+El fichero de logs y su activación se configuran desde `web.xml`.
 
-El trabajo pendiente se concentra ya principalmente en:
+---
 
-completar web.xml
-implementar autenticación
-desarrollar el filtro de logs
-hacer funcional el flujo del alumnado
-integrar las operaciones mínimas con CentroEducativo
-completar documentación y Javadocs
-12. Conclusión
+### 10. Integración con CentroEducativo
 
-El grupo considera que, tras las sesiones iniciales de organización y puesta en marcha técnica, el proyecto dispone de una base suficiente para abordar el cierre del Hito 1.
+El proyecto se integra con el nivel de datos externo mediante servicios REST. La clase `CentroEducativoClient` centraliza todas las llamadas. Operaciones mínimas del Hito 1:
+
+- Login y obtención de `key`
+- Consulta de asignaturas del alumno
+- Consulta de detalle o nota de una asignatura
+
+---
+
+### 11. Estado actual
+
+A fecha de redacción de esta memoria, el proyecto dispone de:
+
+- Repositorio operativo con estructura base creada
+- Paquetes y clases iniciales preparados
+- Entorno técnico común validado
+- Documentación base iniciada
+- Reparto de trabajo reajustado y cerrado
+
+El trabajo pendiente se concentra en la implementación funcional:
+
+- Completar `web.xml` y `tomcat-users.xml`
+- Implementar autenticación
+- Desarrollar `LogsFilter` v2
+- Hacer funcional el flujo del alumnado
+- Integrar operaciones REST con CentroEducativo
+- Completar documentación y Javadocs
+
+---
+
+### 12. Conclusión
+
+El grupo considera que, tras las sesiones iniciales de organización y puesta en marcha técnica, el proyecto dispone de una base suficiente para abordar el cierre del Hito 1. La prioridad a partir de este punto es la implementación funcional, las pruebas de integración y la consolidación de la documentación técnica.
+
 
 La prioridad a partir de este punto debe centrarse en la implementación funcional, las pruebas de integración y la consolidación de la documentación técnica del trabajo realizado.
