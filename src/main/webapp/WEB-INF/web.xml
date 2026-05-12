@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
   <display-name>DEW</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
@@ -11,12 +13,87 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.xhtml</welcome-file>
   </welcome-file-list>
+  
+  <filter>
+    <filter-name>LogsFilter</filter-name>
+    <filter-class>dew.filters.LogsFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>LogsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
   <servlet>
-    <servlet-name>PruebaServlet</servlet-name>
-    <servlet-class>dew.ServletPrueba</servlet-class>
+    <servlet-name>AlumnoAsignaturasServlet</servlet-name>
+    <servlet-class>dew.servlets.AlumnoAsignaturasServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PruebaServlet</servlet-name>
-    <url-pattern>/PruebaServlet</url-pattern>
+    <servlet-name>AlumnoAsignaturasServlet</servlet-name>
+    <url-pattern>/AlumnoAsignaturasServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AlumnoDetalleServlet</servlet-name>
+    <servlet-class>dew.servlets.AlumnoDetalleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AlumnoDetalleServlet</servlet-name>
+    <url-pattern>/AlumnoDetalleServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>LoginRedirectServlet</servlet-name>
+    <servlet-class>dew.servlets.LoginRedirectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginRedirectServlet</servlet-name>
+    <url-pattern>/LoginRedirectServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>dew.servlets.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AlumnoExpedienteServlet</servlet-name>
+    <servlet-class>dew.servlets.AlumnoExpedienteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AlumnoExpedienteServlet</servlet-name>
+    <url-pattern>/AlumnoExpedienteServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AsignaturaAlumnos</servlet-name>
+    <servlet-class>dew.servlets.AsignaturaAlumnosServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AsignaturaAlumnos</servlet-name>
+    <url-pattern>/AsignaturaAlumnosServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>ProfesorAsignaturasServlet</servlet-name>
+    <servlet-class>dew.servlets.ProfesorAsignaturasServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ProfesorAsignaturasServlet</servlet-name>
+    <url-pattern>/ProfesorAsignaturasServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>ModificarNota</servlet-name>
+    <servlet-class>dew.servlets.ModificarNotaServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ModificarNota</servlet-name>
+    <url-pattern>/ModificarNotaServlet</url-pattern>
+</servlet-mapping>
+
 </web-app>
