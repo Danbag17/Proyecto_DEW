@@ -96,4 +96,26 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/ModificarNotaServlet</url-pattern>
 </servlet-mapping>
 
+
+<security-constraint>
+    <web-resource-collection>
+        <web-resource-name>Protección de Datos</web-resource-name>
+        <url-pattern>/*</url-pattern> </web-resource-collection>
+    <auth-constraint>
+        <role-name>rolalu</role-name>
+        <role-name>rolpro</role-name>
+    </auth-constraint>
+</security-constraint>
+
+<login-config>
+    <auth-method>BASIC</auth-method> 
+</login-config>
+
+<security-role>
+    <role-name>rolalu</role-name>
+</security-role>
+<security-role>
+    <role-name>rolpro</role-name>
+</security-role>
+
 </web-app>

@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Servlet implementation class ModificarNota
  */
-@WebServlet("/ModificarNota")
+
 public class ModificarNota extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
