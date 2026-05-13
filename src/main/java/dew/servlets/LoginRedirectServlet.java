@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Servlet implementation class LoginRedirectServlet
  */
-@WebServlet("/LoginRedirectServlet")
+
 public class LoginRedirectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
