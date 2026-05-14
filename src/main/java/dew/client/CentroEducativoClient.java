@@ -64,4 +64,59 @@ public class CentroEducativoClient {
             return response.body().string();
         }
     }
+    
+    public String getAsignaturasAlumno(String dni, String key) throws IOException {
+        
+        String url = BASE_URL + "/alumnos/" + dni + "/asignaturas?key=" + key;
+        
+        System.out.println("Pidiendo asignaturas del alumno: " + url);
+
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Error inesperado: " + response);
+            
+            return response.body().string();
+        }
+    }
+    
+    public String getExpediente(String dni, String key) throws IOException {
+        // Usamos la ruta exacta que aparece en tu Swagger UI
+        String url = BASE_URL + "/alumnos/" + dni + "/asignaturas?key=" + key;
+        
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("accept", "application/json")
+            .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Error API: " + response);
+            return response.body().string(); 
+        }
+    }
+    
+    public String getAlumnoPorDNI(String dni, String key) throws IOException {
+        // La URL para obtener los datos personales del alumno
+        String url = BASE_URL + "/alumnos/" + dni + "?key=" + key;
+        
+        System.out.println("Solicitando datos del alumno: " + url);
+
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("accept", "application/json")
+            .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Error al obtener datos del alumno: " + response);
+            }
+            
+            return response.body().string(); // Devuelve el JSON con nombre, apellidos, etc.
+        }
+    }
 }
