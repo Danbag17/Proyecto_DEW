@@ -36,7 +36,7 @@ public class AsignaturasServlet extends HttpServlet {
             try {
                 String profesoresYAsignaturas = cliente.getAsignaturas(key);
                 response.setContentType("application/json");
-                response.getWriter().write(profesoresYAsignaturas);
+                response.getWriter().write(profesoresYAsignaturas);                
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("Error: " + e.getMessage());
