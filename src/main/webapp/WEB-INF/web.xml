@@ -34,12 +34,12 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>AlumnoDetalleServlet</servlet-name>
-    <servlet-class>dew.servlets.AlumnoDetalleServlet</servlet-class>
+    <servlet-name>AsignaturasServlet</servlet-name>
+    <servlet-class>dew.servlets.AsignaturasServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>AlumnoDetalleServlet</servlet-name>
-    <url-pattern>/AlumnoDetalleServlet</url-pattern>
+    <servlet-name>AsignaturasServlet</servlet-name>
+    <url-pattern>/AsignaturasServlet</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -50,6 +50,16 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <servlet-name>LoginRedirectServlet</servlet-name>
     <url-pattern>/LoginRedirectServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AlumnoDetalleServlet</servlet-name>
+    <servlet-class>dew.servlets.AlumnoDetalleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AlumnoDetalleServlet</servlet-name>
+    <url-pattern>/AlumnoDetalleServlet</url-pattern>
+  </servlet-mapping>
+  
   
   <servlet>
     <servlet-name>LogoutServlet</servlet-name>

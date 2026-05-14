@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CentroEducativoClient {
-    private final OkHttpClient client = new OkHttpClient().newBuilder().cookieJar(new CookieJar() {
-    	private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
+    private final static OkHttpClient client = new OkHttpClient().newBuilder().cookieJar(new CookieJar() {
+    	private static final Map<String, List<Cookie>> cookieStore = new HashMap<>();
 
         @Override
         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
@@ -55,12 +55,11 @@ public class CentroEducativoClient {
     }
 
     public String getAsignaturas(String key) throws IOException {
-        // Ejemplo de GET usando la key en la URL [cite: 125, 248]
         Request request = new Request.Builder()
             .url(BASE_URL + "/asignaturas?key=" + key)
             .get()
             .build();
-
+        System.out.println("KEY = " + BASE_URL + "/asignaturas?key=" + key );
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
