@@ -19,4 +19,21 @@
     <servlet-name>PruebaServlet</servlet-name>
     <url-pattern>/PruebaServlet</url-pattern>
   </servlet-mapping>
+  
+  
+  <context-param>
+    <param-name>logFilePath</param-name>
+    <param-value>/tmp/dew2526-access.log</param-value>
+  </context-param>
+  
+  <filter>
+    <filter-name>Logs</filter-name>
+    <filter-class>dew.filters.LogsFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Logs</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
 </web-app>
