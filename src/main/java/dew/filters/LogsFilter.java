@@ -20,30 +20,8 @@ public class LogsFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpSession sesion = req.getSession();
 
-        // 1. AUTENTICACIÓN DELEGADA (Sincronización con API 9090 - Punto 12 PDF)
-        // Si el usuario está validado en Tomcat pero no tenemos la 'key' de la API
-        if (sesion.getAttribute("key") == null) {
-            String login = req.getRemoteUser(); // web.auth()
-
-            if (login != null) {
-                // Obtenemos las credenciales (aquí usamos el login como DNI)
-                String dni = login;
-                String pass = "654321"; // Debe coincidir con tu tomcat-users.xml
-
-                CentroEducativoClient cliente = new CentroEducativoClient();
-                try {
-                    String key = cliente.login(dni, pass); // data.auth()
-                    if (key != null) {
-                        sesion.setAttribute("key", key);
-                        sesion.setAttribute("dni", dni);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Error en la autenticación delegada: " + e.getMessage());
-                }
-            }
-        }
+       
 
         // 2. LOGS VERSIÓN 2 (Escritura persistente en archivo)
         registrarLog(req);
