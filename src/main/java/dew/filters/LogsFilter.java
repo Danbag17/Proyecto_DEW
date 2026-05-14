@@ -64,7 +64,10 @@ public class LogsFilter implements Filter {
         String lineaLog = String.format("%s %s %s %s %s\n", fechaHora, usuario, ip, pathServlet, metodo);
 
         // Obtener ruta del archivo en la raíz del servidor
-        String rutaArchivo = req.getServletContext().getRealPath("/") + "logs_proyecto.txt";
+        
+        //String rutaArchivo = req.getServletContext().getRealPath("/") + "logs_proyecto.txt";
+        String rutaArchivo = System.getProperty("user.home") + "/logs_proyecto.txt";
+        System.out.println("ESCRIBIENDO EN: " + rutaArchivo); // Mira esto en la consola de Eclips
 
         // Escribir usando "append = true" (Versión 2)
         try (FileWriter fw = new FileWriter(rutaArchivo, true);
