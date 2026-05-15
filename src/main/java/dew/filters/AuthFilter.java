@@ -28,7 +28,7 @@ public class AuthFilter extends HttpFilter implements Filter {
 
     static {
         // users.put("login_tomcat", new String[]{"DNI", "Password_API"});
-        users.put("alumno1", new String[]{"12345678W", "123456"}); // Pepe García Sanchez
+        users.put("alumno1", new String[]{"12345678w", "123456"}); // Pepe García Sanchez
         users.put("profesor1", new String[]{"23456733H", "123456"}); // Ramón Garcia
     }
 
