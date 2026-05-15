@@ -118,5 +118,29 @@ public class CentroEducativoClient {
             
             return response.body().string(); // Devuelve el JSON con nombre, apellidos, etc.
         }
+        
+        
+        
     }
+    
+    public String getDetalleAsignaturaAlumno(String dni, String asig, String key) throws IOException {
+        String url = BASE_URL + "/alumnos/" + dni + "/asignaturas/" + asig + "?key=" + key;
+
+        System.out.println("Pidiendo detalle de asignatura del alumno: " + url);
+
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("accept", "application/json")
+            .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Error al obtener detalle de asignatura: " + response);
+            }
+
+            return response.body().string();
+        }
+    }
+    
 }

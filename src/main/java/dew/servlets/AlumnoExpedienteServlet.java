@@ -32,7 +32,7 @@ public class AlumnoExpedienteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-	        HttpSession session = request.getSession();
+	        HttpSession session = request.getSession(false);
 	        String key = (String) session.getAttribute("key");
 	        String dni = (String) session.getAttribute("dni");
 
