@@ -71,7 +71,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
 	    <auth-method>BASIC</auth-method>
 	    <realm-name>Notas OnLine</realm-name>
 	</login-config>
-</web-app>
+
 
   <servlet>
     <servlet-name>AsignaturasServlet</servlet-name>
