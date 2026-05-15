@@ -16,11 +16,15 @@
 
     <div id="userInfo">
         <!--cambiar por nombre del alumno-->
-        Bienvenida, <strong>Maria</strong> | <a href="AlumnoExpedienteServlet" id="backLink">Consultar Expediente</a> | <a href="LogoutServlet" id="logOut">Cerrar Sesión</a>
+        Bienvenida, <strong id="nombreUsuario">Alumno</strong> | <a href="AlumnoExpedienteServlet" id="backLink">Consultar Expediente</a> | <a href="LogoutServlet" id="logOut">Cerrar Sesión</a>
     </div>
 
     <h1 class="title">Mis Asignaturas</h1>
     <p>Selecciona una asignatura para ver el detalle de tus calificaciones:</p>
+
+	<p>
+    <a href="expediente.html" class="buttonDetail">Ver expediente / certificado</a>
+	</p>
 
     <table>
         <thead>
@@ -30,17 +34,9 @@
                 <th>Acción</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id=tablaAsignaturas>
             <tr>
-               
-                <td>DEW</td>
-                <td>Desarrollo Web</td>
-                <td><a href="AlumnoDetalleServlet" class="buttonDetail">Ver Notas</a></td>
-            </tr>
-            <tr>
-                <td>IAP</td>
-                <td>Integración de Aplicaciones</td>
-                <td><a href="AlumnoDetalleServlet" class="buttonDetail">Ver Notas</a></td>
+                <td colspan="3">Cargando asignaturas</td>
             </tr>
         </tbody>
     </table>
@@ -50,6 +46,88 @@
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", cargarAsignaturas);
 
+async function cargarAsignaturas() {
+    const tbody = document.getElementById("tablaAsignaturas");
+
+    try {
+        const response = await fetch("AlumnoAsignaturasServlet");
+
+        /*
+         * 401 significa que el usuario no tiene sesión.
+         * Lo mandamos al login.
+         */
+        if (response.status === 401) {
+            window.location.href = "login.html?error=session";
+            return;
+        }
+
+        if (!response.ok) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="3">Error al cargar las asignaturas.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        const asignaturas = await response.json();
+
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(asignaturas) || asignaturas.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="3">No hay asignaturas disponibles.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        asignaturas.forEach(asignatura => {
+        
+            const acronimo = asignatura.acronimo || asignatura.codigo || asignatura.id || "";
+            const nombre = asignatura.nombre || asignatura.asignatura || acronimo;
+
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <td>${escapeHtml(acronimo)}</td>
+                <td>${escapeHtml(nombre)}</td>
+                <td>
+                    <a href="detalleAsig.html?asig=${encodeURIComponent(acronimo)}" class="buttonDetail">
+                        Ver Notas
+                    </a>
+                </td>
+            `;
+
+            tbody.appendChild(fila);
+        });
+
+    } catch (error) {
+        console.error("Error cargando asignaturas:", error);
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3">No se pudo conectar con el servidor.</td>
+            </tr>
+        `;
+    }
+}
+
+/*
+ * Evita insertar HTML peligroso si algún campo viene raro.
+ */
+function escapeHtml(texto) {
+    return String(texto)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+</script>
 </body>
 </html>
