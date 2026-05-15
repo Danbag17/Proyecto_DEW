@@ -13,25 +13,30 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpFilter;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 // Se activa para cualquier ruta dentro de /alumno o /profesor
-@WebFilter(urlPatterns = {"/alumno/*", "/profesor/*"})
-public class AuthFilter extends HttpFilter implements Filter {
-	private static final long serialVersionUID = 1L;
+public class AuthFilter implements Filter {
 
     // 8.2: Tabla de usuarios para mapear login de Tomcat con DNI de CentroEducativo
     private static final Map<String, String[]> users = new HashMap<>();
 
     static {
-        // users.put("login_tomcat", new String[]{"DNI", "Password_API"});
-        users.put("alumno1", new String[]{"12345678W", "123456"}); // Pepe García Sanchez
-        users.put("profesor1", new String[]{"23456733H", "123456"}); // Ramón Garcia
+        // Alumnos (rolalu)
+        users.put("pepe",    new String[]{"12345678w", "123456"});
+        users.put("maria",   new String[]{"23456387R", "123456"});
+        users.put("miguel",  new String[]{"34567891F", "123456"});
+        users.put("laura",   new String[]{"93847525G", "123456"});
+        users.put("minerva", new String[]{"37264096W", "123456"});
+        
+        // Profesores (rolpro)
+        users.put("ramon",   new String[]{"23456733H", "123456"});
+        users.put("pedro",   new String[]{"10293756L", "123456"});
+        users.put("manoli",  new String[]{"06374291A", "123456"});
+        users.put("joan",    new String[]{"65748923M", "123456"});
     }
-
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
             throws IOException, ServletException {
         
