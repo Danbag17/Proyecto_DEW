@@ -55,7 +55,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   </servlet>
   <servlet-mapping>
     <servlet-name>AlumnoAsignaturasServlet</servlet-name>
-    <url-pattern>/alumno/Asignaturas</url-pattern>
+    <url-pattern>/alumno/asignaturas</url-pattern>
   </servlet-mapping>
   
 
@@ -149,7 +149,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
 </servlet>
 <servlet-mapping>
     <servlet-name>AsignaturaAlumnos</servlet-name>
-    <url-pattern>/profesor/asignaturas</url-pattern>
+    <url-pattern>/alumno/asignaturas</url-pattern>
 </servlet-mapping>
 
 <servlet>
@@ -170,20 +170,6 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/profesor/modificar-nota</url-pattern>
 </servlet-mapping>
 
-
-<security-constraint>
-    <web-resource-collection>
-        <web-resource-name>Protección de Datos</web-resource-name>
-        <url-pattern>/*</url-pattern> </web-resource-collection>
-    <auth-constraint>
-        <role-name>rolalu</role-name>
-        <role-name>rolpro</role-name>
-    </auth-constraint>
-</security-constraint>
-
-<login-config>
-    <auth-method>BASIC</auth-method> 
-</login-config>
 
 
 
