@@ -80,6 +80,4 @@ La implementación del filtro `LogsFilter` está asignada a **Mikel Escudero Ara
 
 ---
 
-### Estado actual
 
-Durante la sesión 3 se ha dejado creada la clase `LogsFilter.java`. Queda pendiente su implementación efectiva (versión 2) y su integración completa en `web.xml`.
