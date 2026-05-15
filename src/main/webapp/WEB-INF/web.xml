@@ -11,7 +11,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.xhtml</welcome-file>
+  r  <welcome-file>default.xhtml</welcome-file>
   </welcome-file-list>
   
   <context-param>
@@ -111,7 +111,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/ModificarNotaServlet</url-pattern>
 </servlet-mapping>
 
-
+<!--  
 <security-constraint>
     <web-resource-collection>
         <web-resource-name>Protección de Datos</web-resource-name>
@@ -132,5 +132,5 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
 <security-role>
     <role-name>rolpro</role-name>
 </security-role>
-
+-->
 </web-app>
