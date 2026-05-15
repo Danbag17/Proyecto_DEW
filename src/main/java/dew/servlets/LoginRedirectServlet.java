@@ -28,7 +28,8 @@ public class LoginRedirectServlet extends HttpServlet {
                 session.setAttribute("dni", dni);
 
                 // hardcoded for now
-                response.sendRedirect("AlumnoAsignaturasServlet");
+                
+                response.sendRedirect("asignaturas.html");
             } else {
                 // todo display some error
                 response.sendRedirect("login.html");
