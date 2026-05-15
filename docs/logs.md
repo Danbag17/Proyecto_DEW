@@ -22,7 +22,7 @@ Este filtro intercepta todas las peticiones que pasan por los servlets de la apl
 |---|---|
 | **v0** | Servlet que devuelve la información de log directamente al navegador |
 | **v1** | Servlet que escribe el log en un fichero con ruta fija |
-| **v2** ✅ Hito 1 | Filtro real que intercepta peticiones, escribe en fichero persistente con ruta configurable desde `web.xml` y mantiene el log ordenado cronológicamente |
+| **v2**  Hito 1 | Filtro real que intercepta peticiones, escribe en fichero persistente con ruta configurable desde `web.xml` y mantiene el log ordenado cronológicamente |
 
 ---
 
