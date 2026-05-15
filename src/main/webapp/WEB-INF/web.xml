@@ -38,6 +38,41 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/AlumnoAsignaturasServlet</url-pattern>
   </servlet-mapping>
   
+
+	  
+	  <security-role>
+	    <role-name>rolalu</role-name>
+	</security-role>
+	<security-role>
+	    <role-name>rolpro</role-name>
+	</security-role>
+	
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>Area de Profesores</web-resource-name>
+	        <url-pattern>/profesor/*</url-pattern>
+	    </web-resource-collection>
+	    <auth-constraint>
+	        <role-name>rolpro</role-name>
+	    </auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>Area de Alumnos</web-resource-name>
+	        <url-pattern>/alumno/*</url-pattern>
+	    </web-resource-collection>
+	    <auth-constraint>
+	        <role-name>rolalu</role-name>
+	    </auth-constraint>
+	</security-constraint>
+	
+	<login-config>
+	    <auth-method>BASIC</auth-method>
+	    <realm-name>Notas OnLine</realm-name>
+	</login-config>
+
+
   <servlet>
     <servlet-name>AsignaturasServlet</servlet-name>
     <servlet-class>dew.servlets.AsignaturasServlet</servlet-class>

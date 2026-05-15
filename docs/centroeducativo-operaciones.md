@@ -67,3 +67,5 @@ Las siguientes operaciones quedan previstas para la parte del profesorado, que s
 ### Observación sobre el Hito 1
 
 En el Hito 1 se priorizan las operaciones de consulta del alumnado. Las operaciones de inserción, actualización o borrado pueden quedar iniciadas o preparadas estructuralmente, pero no constituyen el núcleo prioritario de esta entrega.
+
+
