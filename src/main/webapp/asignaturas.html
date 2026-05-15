@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,10 +16,10 @@
 
     <div id="userInfo">
         <!--cambiar por nombre del alumno-->
-        Bienvenido, <strong>placeholder</strong> | <a href="LogoutServlet" id="logOut">Cerrar Sesión</a>
+        Bienvenida, <strong>Maria</strong> | <a href="AlumnoExpedienteServlet" id="backLink">Consultar Expediente</a> | <a href="LogoutServlet" id="logOut">Cerrar Sesión</a>
     </div>
 
-    <h1>Mis Asignaturas</h1>
+    <h1 class="title">Mis Asignaturas</h1>
     <p>Selecciona una asignatura para ver el detalle de tus calificaciones:</p>
 
     <table>
@@ -31,15 +32,14 @@
         </thead>
         <tbody>
             <tr>
-                <!--cambiar por código de la asignatura (DEW,DCA)-->
-                <td>placeholder</td>
-                <!--cambiar por nombre completo de la asignatura (Desarrollo Web...)-->
-                <td>placeholder</td>
+               
+                <td>DEW</td>
+                <td>Desarrollo Web</td>
                 <td><a href="AlumnoDetalleServlet" class="buttonDetail">Ver Notas</a></td>
             </tr>
             <tr>
-                <td>placeholder</td>
-                <td>placeholder</td>
+                <td>IAP</td>
+                <td>Integración de Aplicaciones</td>
                 <td><a href="AlumnoDetalleServlet" class="buttonDetail">Ver Notas</a></td>
             </tr>
         </tbody>
