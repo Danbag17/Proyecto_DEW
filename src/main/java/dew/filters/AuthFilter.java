@@ -1,4 +1,4 @@
-package dew.filters; // <-- ¡Nota el cambio aquí!
+package dew.filters; 
 
 import java.io.IOException;
 import java.net.URI;

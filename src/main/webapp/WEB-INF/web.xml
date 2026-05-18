@@ -149,11 +149,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
 </servlet>
 <servlet-mapping>
     <servlet-name>AsignaturaAlumnos</servlet-name>
-<<<<<<< HEAD
-    <url-pattern>/alumno/asignaturas</url-pattern>
-=======
     <url-pattern>/profesor/alumnos</url-pattern>
->>>>>>> branch 'master' of https://github.com/Danbag17/Proyecto_DEW
 </servlet-mapping>
 
 <servlet>
@@ -174,11 +170,4 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/profesor/modificar-nota</url-pattern>
 </servlet-mapping>
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> branch 'master' of https://github.com/Danbag17/Proyecto_DEW
 </web-app>
