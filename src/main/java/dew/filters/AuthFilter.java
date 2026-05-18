@@ -24,6 +24,7 @@ public class AuthFilter implements Filter {
     private static final Map<String, String[]> users = new HashMap<>();
 
     static {
+
         // Alumnos (rolalu)
         users.put("pepe",    new String[]{"12345678w", "123456"});
         users.put("maria",   new String[]{"23456387R", "123456"});
@@ -36,6 +37,11 @@ public class AuthFilter implements Filter {
         users.put("pedro",   new String[]{"10293756L", "123456"});
         users.put("manoli",  new String[]{"06374291A", "123456"});
         users.put("joan",    new String[]{"65748923M", "123456"});
+
+
+        // users.put("login_tomcat", new String[]{"DNI", "Password_API"});
+        users.put("alumno1", new String[]{"12345678w", "123456"}); // Pepe García Sanchez
+        users.put("profesor1", new String[]{"23456733H", "123456"}); // Ramón Garcia
     }
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
             throws IOException, ServletException {
