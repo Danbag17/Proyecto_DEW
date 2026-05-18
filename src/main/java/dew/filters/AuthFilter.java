@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-package dew.filters; //
-=======
 package dew.filters; 
->>>>>>> branch 'Daniel' of https://github.com/Danbag17/Proyecto_DEW
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
