@@ -1,9 +1,7 @@
-<<<<<<< HEAD
-package dew.filters; 
-=======
-package dew.filters;
 
->>>>>>> 083c613 (base)
+package dew.filters; 
+
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,53 +14,15 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-<<<<<<< HEAD
-
-=======
->>>>>>> 083c613 (base)
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
-// Se activa para cualquier ruta dentro de /alumno o /profesor
-=======
-/**
- * Filtro puente entre autenticación Tomcat y sesión/key de CentroEducativo.
- *
- * Importante:
- * - No usa anotaciones porque el enunciado exige configuración exclusivamente
- *   mediante web.xml.
- * - Este filtro presupone que Tomcat ya ha autenticado al usuario para /alumno/* o
- *   /profesor/* y que getRemoteUser() devuelve el login de Tomcat.
- */
->>>>>>> 083c613 (base)
+
 public class AuthFilter implements Filter {
 
     private static final Map<String, Credentials> USERS = new HashMap<>();
 
     static {
-<<<<<<< HEAD
-
-        // Alumnos (rolalu)
-        users.put("pepe",    new String[]{"12345678w", "123456"});
-        users.put("maria",   new String[]{"23456387R", "123456"});
-        users.put("miguel",  new String[]{"34567891F", "123456"});
-        users.put("laura",   new String[]{"93847525G", "123456"});
-        users.put("minerva", new String[]{"37264096W", "123456"});
-        
-        // Profesores (rolpro)
-        users.put("ramon",   new String[]{"23456733H", "123456"});
-        users.put("pedro",   new String[]{"10293756L", "123456"});
-        users.put("manoli",  new String[]{"06374291A", "123456"});
-        users.put("joan",    new String[]{"65748923M", "123456"});
-
-
-        // users.put("login_tomcat", new String[]{"DNI", "Password_API"});
-        users.put("alumno1", new String[]{"12345678w", "123456"}); // Pepe García Sanchez
-        users.put("profesor1", new String[]{"23456733H", "123456"}); // Ramón Garcia
-    }
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
-=======
         /*
          * Ajustad estos login_tomcat a lo que pongáis en tomcat-users.xml/conf.
          * Los DNI/password son los de CentroEducativo.
@@ -87,7 +47,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
->>>>>>> 083c613 (base)
             throws IOException, ServletException {
 
     	
@@ -146,8 +105,6 @@ public class AuthFilter implements Filter {
     @Override
     public void destroy() {
     }
-<<<<<<< HEAD
-=======
 
     private static final class Credentials {
         final String dni;
@@ -158,5 +115,5 @@ public class AuthFilter implements Filter {
             this.password = password;
         }
     }
->>>>>>> 083c613 (base)
+
 }

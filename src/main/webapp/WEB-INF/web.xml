@@ -1,122 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
 https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
   <display-name>DEW</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.xhtml</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.xhtml</welcome-file>
-  </welcome-file-list>
-  
- 
-  <filter>
-    <filter-name>Logs</filter-name>
-    <filter-class>dew.filters.LogsFilter</filter-class>
-	    <init-param>
-	    <param-name>logFilePath</param-name>
-	    <param-value>/tmp/nol2526-access.log</param-value>
-	</init-param>
-	
-	<init-param>
-	    <param-name>active</param-name>
-	    <param-value>true</param-value>
-	</init-param>
-  </filter>
-  
-  <filter-mapping>
-    <filter-name>Logs</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-	  
-	  <filter>
-	    <filter-name>AuthFilter</filter-name>
-	    <filter-class>dew.filters.AuthFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-	    <filter-name>AuthFilter</filter-name>
-	    <url-pattern>/alumno/*</url-pattern>
-	</filter-mapping>
-	
-	<filter-mapping>
-	    <filter-name>AuthFilter</filter-name>
-	    <url-pattern>/profesor/*</url-pattern>
-	</filter-mapping>
-	  
-  <servlet>
-    <servlet-name>AlumnoAsignaturasServlet</servlet-name>
-    <servlet-class>dew.servlets.AlumnoAsignaturasServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AlumnoAsignaturasServlet</servlet-name>
-    <url-pattern>/alumno/asignaturas</url-pattern>
-  </servlet-mapping>
-  
-
-	  
-	  <security-role>
-	    <role-name>rolalu</role-name>
-	</security-role>
-	<security-role>
-	    <role-name>rolpro</role-name>
-	</security-role>
-	
-	<security-constraint>
-	    <web-resource-collection>
-	        <web-resource-name>Area de Profesores</web-resource-name>
-	        <url-pattern>/profesor/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
-	        <role-name>rolpro</role-name>
-	    </auth-constraint>
-	</security-constraint>
-	
-	<security-constraint>
-	    <web-resource-collection>
-	        <web-resource-name>Area de Alumnos</web-resource-name>
-	        <url-pattern>/alumno/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
-	        <role-name>rolalu</role-name>
-	    </auth-constraint>
-	</security-constraint>
-	
-	<login-config>
-	    <auth-method>FORM</auth-method>
-	    <realm-name>Notas OnLine</realm-name>
-	    <form-login-config>
-	    	<form-login-page>/login.html</form-login-page>
-	    	<form-error-page>/login.html</form-error-page>
-	    </form-login-config>
-	</login-config>
-=======
-<web-app
-    xmlns="https://jakarta.ee/xml/ns/jakartaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-    id="WebApp_ID"
-    version="6.0">
-
-    <display-name>nol2526</display-name>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
->>>>>>> 083c613 (base)
+
 
     <context-param>
         <param-name>logFilePath</param-name>
         <param-value>/tmp/nol2526-access.log</param-value>
     </context-param>
 
-<<<<<<< HEAD
   <servlet>
     <servlet-name>AsignaturasServlet</servlet-name>
     <servlet-class>dew.servlets.AsignaturasServlet</servlet-class>
@@ -190,7 +87,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
     <url-pattern>/profesor/modificar-nota</url-pattern>
 </servlet-mapping>
 
-=======
+
     <!-- ===================== FILTROS ===================== -->
 
     <filter>
@@ -266,32 +163,11 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <url-pattern>/AlumnoAsignaturasServlet</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>AlumnoDetalleServlet</servlet-name>
-        <servlet-class>dew.servlets.AlumnoDetalleServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AlumnoDetalleServlet</servlet-name>
-        <url-pattern>/AlumnoDetalleServlet</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>AlumnoExpedienteServlet</servlet-name>
-        <servlet-class>dew.servlets.AlumnoExpedienteServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AlumnoExpedienteServlet</servlet-name>
-        <url-pattern>/AlumnoExpedienteServlet</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ProfesorAsignaturasServlet</servlet-name>
-        <servlet-class>dew.servlets.ProfesorAsignaturasServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProfesorAsignaturasServlet</servlet-name>
-        <url-pattern>/ProfesorAsignaturasServlet</url-pattern>
-    </servlet-mapping>
+
+
+
 
     <servlet>
         <servlet-name>AsignaturaAlumnosServlet</servlet-name>
@@ -311,32 +187,9 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <url-pattern>/ModificarNotaServlet</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>AsignaturasServlet</servlet-name>
-        <servlet-class>dew.servlets.AsignaturasServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AsignaturasServlet</servlet-name>
-        <url-pattern>/AsignaturasServlet</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>LoginRedirectServlet</servlet-name>
-        <servlet-class>dew.servlets.LoginRedirectServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginRedirectServlet</servlet-name>
-        <url-pattern>/LoginRedirectServlet</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>dew.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/LogoutServlet</url-pattern>
-    </servlet-mapping>
+ 
 
     <!-- ===================== SEGURIDAD TOMCAT ===================== -->
 
@@ -395,5 +248,5 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   </form-login-config>
 </login-config>
 
->>>>>>> 083c613 (base)
+
 </web-app>
