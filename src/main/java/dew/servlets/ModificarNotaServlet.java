@@ -62,22 +62,29 @@ public class ModificarNotaServlet extends HttpServlet {
     }
 
     /*
-     * Compatibilidad práctica:
-     * - AJAX recomendado: JSON { "dniAlumno": "...", "asig": "DEW", "nota": 8.5 }
-     * - Formularios o fetch con URLSearchParams: dniAlumno=...&asig=...&nota=...
+     * Lee dni/asig de la query string (los manda api.js) y la nota del body JSON
+     * o del parámetro "nota". Sirve para AJAX y para formularios clásicos.
      */
     private NotaRequest leerNotaRequest(HttpServletRequest request) throws IOException {
-        String contentType = request.getContentType();
+        NotaRequest nr = new NotaRequest();
 
+        nr.dniAlumno = primerNoVacio(
+                request.getParameter("dniAlumno"),
+                request.getParameter("dni"));
+        nr.asig = request.getParameter("asig");
+
+        String contentType = request.getContentType();
         if (contentType != null && contentType.toLowerCase().contains("application/json")) {
             try (BufferedReader reader = request.getReader()) {
-                return gson.fromJson(reader, NotaRequest.class);
+                NotaRequest bodyData = gson.fromJson(reader, NotaRequest.class);
+                if (bodyData != null) {
+                    if (nr.dniAlumno == null || nr.dniAlumno.isBlank()) nr.dniAlumno = bodyData.dniAlumno;
+                    if (nr.asig == null || nr.asig.isBlank()) nr.asig = bodyData.asig;
+                    nr.nota = bodyData.nota;
+                }
             }
+            return nr;
         }
-
-        NotaRequest nr = new NotaRequest();
-        nr.dniAlumno = request.getParameter("dniAlumno");
-        nr.asig = request.getParameter("asig");
 
         String notaParam = request.getParameter("nota");
         if (notaParam != null && !notaParam.isBlank()) {
@@ -89,6 +96,11 @@ public class ModificarNotaServlet extends HttpServlet {
         }
 
         return nr;
+    }
+
+    private static String primerNoVacio(String a, String b) {
+        if (a != null && !a.isBlank()) return a;
+        return b;
     }
 
     private static class NotaRequest {

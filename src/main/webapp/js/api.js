@@ -105,6 +105,15 @@ function showError(err) {
   console.error(err);
 }
 
+function hideError() {
+  var box = document.getElementById('errorBox');
+
+  if (box) {
+    box.textContent = '';
+    box.classList.add('d-none');
+  }
+}
+
 function logout() {
   window.location.href = API.logout;
 }
