@@ -1,40 +1,57 @@
 package dew.servlets;
 
+import java.io.IOException;
+
+import dew.client.CentroEducativoClient;
+import dew.util.SessionsUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import dew.client.CentroEducativoClient;
 
 public class LoginRedirectServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    /*
+     * Este servlet solo tiene sentido si usáis un login HTML propio.
+     * Si usáis BASIC/FORM de Tomcat puro, normalmente basta con AuthFilter.
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String dni = request.getParameter("dni");
-        String pass = request.getParameter("password");
-        System.out.println("KEY = " + dni + pass);
-        CentroEducativoClient cliente = new CentroEducativoClient();
+        String password = request.getParameter("password");
+
+        if (dni == null || dni.isBlank() || password == null || password.isBlank()) {
+            response.sendRedirect("login.html?error=missing");
+            return;
+        }
 
         try {
-            String key = cliente.login(dni, pass);
+            String key = new CentroEducativoClient().login(dni, password);
 
-            if (key != null && !key.isEmpty() && !key.equals("-1")) {
-                HttpSession session = request.getSession();
-                session.setAttribute("key", key);
-                session.setAttribute("dni", dni);
-
-                // hardcoded for now
-                
-                response.sendRedirect("asignaturas.html");
-            } else {
-                // todo display some error
-                response.sendRedirect("login.html");
+            if (key == null || key.isBlank() || "-1".equals(key.trim())) {
+                response.sendRedirect("login.html?error=bad_credentials");
+                return;
             }
+
+            SessionsUtils.createUserSession(request, dni, password, key.trim());
+
+            if (request.isUserInRole("rolpro")) {
+                response.sendRedirect(request.getContextPath() + "/profesor-asignaturas.html");
+            } else if (request.isUserInRole("rolalu")) {
+                response.sendRedirect(request.getContextPath() + "/alumno-asignaturas.html");
+            } else {
+                /*
+                 * Si el login propio no está integrado con roles Tomcat, como mínimo
+                 * dejamos una salida segura.
+                 */
+                response.sendRedirect(request.getContextPath() + "/index.html");
+            }
+
         } catch (Exception e) {
+            throw new ServletException("Error autenticando contra CentroEducativo", e);
         }
     }
 }
