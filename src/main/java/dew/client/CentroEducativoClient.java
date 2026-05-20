@@ -180,7 +180,9 @@ public class CentroEducativoClient {
 
         Request request = new Request.Builder()
                 .url(BASE_URL
-                        + "/profesoresyasignaturas?key="
+                        + "/profesores/"
+                        + enc(dniProfesor)
+                        + "/asignaturas?key="
                         + enc(key))
                 .get()
                 .addHeader("accept", "application/json")
