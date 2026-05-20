@@ -55,38 +55,39 @@ public class CentroEducativoClient {
             })
             .build();
 
-    public String login(String dni, String password)
-            throws IOException {
+    public String login(String dni, String password) throws IOException {
 
         String json =
                 "{\"dni\":\"" + dni
                 + "\",\"password\":\"" + password + "\"}";
 
-        RequestBody body = RequestBody.create(
-                json,
-                JSON
-        );
+        RequestBody body = RequestBody.create(json, JSON);
 
         Request request = new Request.Builder()
                 .url(BASE_URL + "/login")
                 .post(body)
+                .addHeader("Accept", "text/plain, application/json, */*")
+                .addHeader("Content-Type", "application/json; charset=utf-8")
                 .build();
 
-        try (Response response =
-                     client.newCall(request).execute()) {
+        try (Response response = client.newCall(request).execute()) {
 
-            String responseBody =
-                    response.body() != null
+            String responseBody = response.body() != null
                     ? response.body().string().trim()
                     : "";
 
-            if (!response.isSuccessful()) {
+            System.out.println("[CentroEducativoClient.login]");
+            System.out.println("URL = " + BASE_URL + "/login");
+            System.out.println("DNI = " + dni);
+            System.out.println("STATUS = " + response.code());
+            System.out.println("BODY = " + responseBody);
 
+            if (!response.isSuccessful()) {
                 throw new IOException(
                         "CentroEducativo HTTP "
-                        + response.code()
-                        + ": "
-                        + responseBody
+                                + response.code()
+                                + ": "
+                                + responseBody
                 );
             }
 
