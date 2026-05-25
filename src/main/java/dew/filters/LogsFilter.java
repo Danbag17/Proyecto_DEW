@@ -21,11 +21,10 @@ public class LogsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
-
         logFilePath = context.getInitParameter("logFilePath");
 
         if (logFilePath == null || logFilePath.isBlank()) {
-            throw new ServletException("No se ha definido el parámetro logFilePath en web.xml");
+            throw new ServletException("No se ha definido logFilePath en web.xml");
         }
     }
 
@@ -35,30 +34,35 @@ public class LogsFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        registrarAcceso(httpRequest);
+        if (!esRecursoEstatico(httpRequest.getRequestURI())) {
+            registrarAcceso(httpRequest);
+        }
 
         chain.doFilter(request, response);
     }
 
     private void registrarAcceso(HttpServletRequest request) throws IOException {
-        String recurso = request.getRequestURI();
-
-        if (esRecursoEstatico(recurso)) {
-            return;
-        }
-
         String fecha = LocalDateTime.now().toString();
 
         String usuario = request.getRemoteUser();
-        if (usuario == null) {
+        if (usuario == null || usuario.isBlank()) {
             usuario = "anonimo";
         }
 
         String ip = request.getRemoteAddr();
+
+        /*
+         * El enunciado pide que aparezca el servlet/recurso activado.
+         * Usamos servletPath para que salga /AlumnoAsignaturasServlet en vez de toda la URI.
+         */
+        String recurso = request.getServletPath();
+        if (recurso == null || recurso.isBlank()) {
+            recurso = request.getRequestURI();
+        }
+
         String metodo = request.getMethod();
 
         String linea = fecha + " " + usuario + " " + ip + " " + recurso + " " + metodo;
-
         escribirLinea(linea);
     }
 
@@ -72,7 +76,8 @@ public class LogsFilter implements Filter {
                 || recurso.endsWith(".ico")
                 || recurso.endsWith(".svg")
                 || recurso.endsWith(".woff")
-                || recurso.endsWith(".woff2");
+                || recurso.endsWith(".woff2")
+                || recurso.endsWith(".map");
     }
 
     private synchronized void escribirLinea(String linea) throws IOException {
@@ -84,6 +89,5 @@ public class LogsFilter implements Filter {
 
     @Override
     public void destroy() {
-        // No hay recursos abiertos permanentemente.
     }
 }
