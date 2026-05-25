@@ -6,7 +6,7 @@
 **Fecha:** 04/05/2026  
 **Hora:** 17:00 h  
 **Lugar:** Laboratorio DSIC 3, ETSINF (UPV)  
-**Secretario:** Carlos Moldes Peña  
+**Secretario:** Vanesa Castro Bello
 
 ---
 
@@ -91,7 +91,7 @@ Se acuerda utilizar como punto de partida el proyecto de la sesión introductori
 
 Dicha base será adaptada progresivamente, sustituyendo todos los elementos de prueba por clases, nombres, servlets y mapeos propios del laboratorio.
 
-> **Nombre del proyecto de trabajo:** `nol2526`
+> **Nombre del proyecto de trabajo:** `Proyecto_DEW`
 
 ---
 
@@ -336,4 +336,4 @@ El acta ha sido revisada y aceptada por todos los integrantes del grupo.
 
 ---
 
-*Acta redactada por Carlos Moldes Peña – Secretario del Grupo G14*
+*Acta redactada por Vanesa Castro Bello – Secretaria del Grupo G14*
