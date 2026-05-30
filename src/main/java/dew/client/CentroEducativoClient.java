@@ -21,7 +21,7 @@ import java.util.Map;
 public class CentroEducativoClient {
 
     private static final String BASE_URL =
-            "http://172.23.189.79:9090/CentroEducativo";
+            " http://localhost:9090/CentroEducativo";
 
     private static final MediaType JSON =
             MediaType.parse("application/json; charset=utf-8");
