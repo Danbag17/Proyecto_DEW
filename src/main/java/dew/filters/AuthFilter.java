@@ -32,6 +32,7 @@ public class AuthFilter implements Filter {
     	USERS.put("34567891F", new Credentials("34567891F", "123456"));
     	USERS.put("93847525G", new Credentials("93847525G", "123456"));
     	USERS.put("37264096W", new Credentials("37264096W", "123456"));
+    	USERS.put("12345678A", new Credentials("12345678A", "123456"));
 
     	USERS.put("22222222P", new Credentials("22222222P", "123456"));
     	USERS.put("profesor2", new Credentials("23456733H", "123456"));
@@ -85,6 +86,8 @@ public class AuthFilter implements Filter {
             }
 
             try {
+            	//CentroEducativoClient.clearCookieJar();
+            	
                 String key = new CentroEducativoClient().login(credentials.dni, credentials.password);
 
                 if (key == null || key.isBlank() || "-1".equals(key.trim())) {

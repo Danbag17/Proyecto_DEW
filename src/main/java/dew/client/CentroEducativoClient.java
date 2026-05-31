@@ -21,17 +21,17 @@ import java.util.Map;
 public class CentroEducativoClient {
 
     private static final String BASE_URL =
-            "http://172.23.189.79:9090/CentroEducativo";
+            "http://127.0.0.1:9090/CentroEducativo";
 
     private static final MediaType JSON =
             MediaType.parse("application/json; charset=utf-8");
 
+    private static final Map<String, List<Cookie>> cookieStore =
+            new HashMap<>();
+
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
             .cookieJar(new CookieJar() {
-
-                private final Map<String, List<Cookie>> cookieStore =
-                        new HashMap<>();
 
                 @Override
                 public synchronized void saveFromResponse(
@@ -54,6 +54,10 @@ public class CentroEducativoClient {
                 }
             })
             .build();
+
+    public static void clearCookieJar() {
+        cookieStore.clear();
+    }
 
     public String login(String dni, String password) throws IOException {
 
@@ -216,7 +220,7 @@ public class CentroEducativoClient {
             String key)
             throws IOException {
 
-        String json = "{\"nota\":" + nota + "}";
+        String json = String.valueOf(nota);
 
         Request request = new Request.Builder()
                 .url(BASE_URL
@@ -227,7 +231,7 @@ public class CentroEducativoClient {
                         + "?key="
                         + enc(key))
                 .put(RequestBody.create(json, JSON))
-                .addHeader("accept", "application/json")
+                .addHeader("accept", "*/*")
                 .build();
 
         return executeAllowEmpty(request);

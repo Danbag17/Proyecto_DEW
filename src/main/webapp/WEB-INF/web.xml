@@ -169,9 +169,9 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <web-resource-collection>
             <web-resource-name>Area de Profesores</web-resource-name>
             <url-pattern>/profesor/*</url-pattern>
-            <url-pattern>/ProfesorAsignaturasServlet</url-pattern>
-            <url-pattern>/AsignaturaAlumnosServlet</url-pattern>
-            <url-pattern>/ModificarNotaServlet</url-pattern>
+            <!-- <url-pattern>/ProfesorAsignaturasServlet</url-pattern> -->
+            <!--<url-pattern>/AsignaturaAlumnosServlet</url-pattern>-->
+            <!--<url-pattern>/ModificarNotaServlet</url-pattern>-->
         </web-resource-collection>
         <auth-constraint>
             <role-name>rolpro</role-name>

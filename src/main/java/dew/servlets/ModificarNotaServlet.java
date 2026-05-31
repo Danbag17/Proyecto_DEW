@@ -52,6 +52,22 @@ public class ModificarNotaServlet extends HttpServlet {
         try {
             String json = new CentroEducativoClient()
                     .modificarNota(notaRequest.dniAlumno, notaRequest.asig, notaRequest.nota, key);
+            
+            
+            
+            if (json == null || json.isBlank()) {
+                json = "{\"ok\":true}";
+            } else {
+                String limpio = json.trim();
+                // Si no empieza por '{' ni por '[', es texto plano. Lo transformamos en un objeto JSON válido.
+                if (!limpio.startsWith("{") && !limpio.startsWith("[")) {
+                    json = "{\"ok\":true,\"mensaje\":\"" + limpio.replace("\"", "\\\"") + "\"}";
+                }
+            }
+            
+            
+            
+            
 
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(json);
