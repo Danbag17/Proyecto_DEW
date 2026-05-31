@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-API_URL="${API_URL:-http://172.23.189.79:9090/CentroEducativo}"
+API_URL="${API_URL:-http://127.0.0.1:9090/CentroEducativo}"
 COOKIE_ADMIN="${COOKIE_ADMIN:-/tmp/nol2526-admin-cookies.txt}"
 COOKIE_PROF_AVA="${COOKIE_PROF_AVA:-/tmp/nol2526-prof-ava-cookies.txt}"
 ADMIN_DNI="111111111"

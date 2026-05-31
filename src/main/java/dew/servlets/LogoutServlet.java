@@ -2,6 +2,7 @@ package dew.servlets;
 
 import java.io.IOException;
 
+import dew.client.CentroEducativoClient;
 import dew.util.SessionsUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -17,11 +18,14 @@ public class LogoutServlet extends HttpServlet {
 
         try {
             request.logout();
+            
+            SessionsUtils.invalidateSession(request);
+            CentroEducativoClient.clearCookieJar();
+            response.sendRedirect(request.getContextPath() + "/index.html");
         } catch (ServletException ignored) {
         }
 
-        SessionsUtils.invalidateSession(request);
-        response.sendRedirect(request.getContextPath() + "/index.html");
+        
     }
 
     @Override

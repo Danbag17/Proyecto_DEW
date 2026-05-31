@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class LogsFilter implements Filter {
 
@@ -33,6 +34,13 @@ public class LogsFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        
+        HttpServletResponse res = (HttpServletResponse) response;
+        
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setDateHeader("Expires", 0);
+        
 
         if (!esRecursoEstatico(httpRequest.getRequestURI())) {
             registrarAcceso(httpRequest);
