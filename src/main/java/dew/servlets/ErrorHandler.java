@@ -26,8 +26,8 @@ public class ErrorHandler extends HttpServlet {
             case 403:
                 title = "Acceso denegado";
                 message = "No tienes permisos para acceder a este recurso.";
-                break;
-
+                break;                
+            
             case 500:
                 title = "Error interno del servidor";
                 message = "Ha ocurrido un error inesperado. Inténtalo más tarde.";
