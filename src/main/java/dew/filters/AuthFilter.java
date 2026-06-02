@@ -54,7 +54,11 @@ public class AuthFilter implements Filter {
     	
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
+        
+        //Impedir que Firefox cachee las páginas protegidas
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setDateHeader("Expires", 0);
 
     	String uri = req.getRequestURI();
 
@@ -96,10 +100,12 @@ public class AuthFilter implements Filter {
                     return;
                 }
 
-                SessionsUtils.createUserSession(req, credentials.dni, credentials.password, key.trim());
-            } catch (Exception e) {
-                throw new ServletException("Error autenticando contra CentroEducativo", e);
-            }
+                SessionsUtils.createUserSession(req, credentials.dni, credentials.password, key.trim());            
+            	
+                
+            	} catch (Exception e) {
+            		throw new ServletException("Error autenticando contra CentroEducativo", e);
+            	}
         }
 
         chain.doFilter(request, response);

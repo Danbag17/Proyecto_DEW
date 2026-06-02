@@ -37,9 +37,9 @@ public class LogsFilter implements Filter {
         
         HttpServletResponse res = (HttpServletResponse) response;
         
-        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        res.setHeader("Pragma", "no-cache");
-        res.setDateHeader("Expires", 0);
+        //res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        //res.setHeader("Pragma", "no-cache");
+        //res.setDateHeader("Expires", 0);
         
 
         if (!esRecursoEstatico(httpRequest.getRequestURI())) {

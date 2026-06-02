@@ -5,6 +5,7 @@ import java.io.IOException;
 import dew.client.CentroEducativoClient;
 import dew.util.SessionsUtils;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,14 +18,26 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            request.logout();
-            
-            SessionsUtils.invalidateSession(request);
-            CentroEducativoClient.clearCookieJar();
-            response.sendRedirect(request.getContextPath() + "/index.html");
+            request.logout();            
         } catch (ServletException ignored) {
         }
-
+        
+        SessionsUtils.invalidateSession(request);
+        CentroEducativoClient.clearCookieJar();
+        
+        
+        //Borramos la cookie de sesion del navegador
+        String cookiePath = request.getContextPath();
+        if(cookiePath == null || cookiePath.isEmpty()) {
+        	cookiePath = "/";
+        }
+        Cookie sessionCookie = new Cookie("JSESSIONID", "");
+        sessionCookie.setMaxAge(0);
+        sessionCookie.setPath(cookiePath);
+        sessionCookie.setHttpOnly(true);
+        response.addCookie(sessionCookie);
+        
+        response.sendRedirect(request.getContextPath() + "/index.html");
         
     }
 
