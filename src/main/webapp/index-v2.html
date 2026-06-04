@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>NOL 25/26 · Portal académico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/nol-v2.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index-v2.html">NOL 25/26<small>Notas Online · Portal académico</small></a>
+      <div class="ms-auto">
+        <a class="btn btn-outline-warning btn-sm" href="LogoutServlet">Cerrar sesión</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <section class="nol-hero">
+      <h1 class="display-6">Bienvenid@ a Notas Online</h1>
+      <p class="lead">
+        El portal académico para consultar y gestionar las calificaciones del centro.
+        Identifícate como <strong>alumno</strong> para revisar tus notas y tu expediente,
+        o como <strong>profesor</strong> para consultar y modificar las calificaciones de
+        tus asignaturas.
+      </p>
+      <div class="nol-hero-meta">
+        <span class="nol-chip">Curso activo&nbsp;<b>2025/2026</b></span>
+        <span class="nol-chip">Última actualización&nbsp;<b>03/06/2026 · 19:41</b></span>
+        <span class="nol-chip">Centro&nbsp;<b>E.T.S. de Informática</b></span>
+      </div>
+    </section>
+
+    <div class="alert alert-success d-none mt-4" id="logoutBox" role="alert"></div>
+
+    <!-- ====== Accesos por rol ====== -->
+    <section class="row g-4 mt-2">
+      <div class="col-md-6">
+        <div class="card h-100 nol-card-accent">
+          <div class="card-body d-flex flex-column">
+            <span class="nol-badge mb-2">Si eres alumn@…</span>
+            <h2 class="h4">Consulta tus calificaciones</h2>
+            <p class="text-muted">
+              Accede a la lista de asignaturas en las que estás matriculad@, revisa la nota de
+              cada una y genera tu <strong>expediente</strong> con foto, listo para imprimir.
+              Necesitarás tus datos identificativos para acceder.
+            </p>
+            <a class="btn btn-primary mt-auto" href="alumno/alumno-asignaturas-v2.html">Consultar calificaciones</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100 nol-card-accent">
+          <div class="card-body d-flex flex-column">
+            <span class="nol-badge mb-2">Si eres profesor@…</span>
+            <h2 class="h4">Consulta o modifica calificaciones</h2>
+            <p class="text-muted">
+              Revisa las asignaturas que impartes, navega por las fichas del alumnado matriculado,
+              consulta la <strong>nota media</strong> de cada asignatura y ajusta las calificaciones.
+              Necesitarás tus datos identificativos para acceder.
+            </p>
+            <a class="btn btn-success mt-auto" href="profesor/profesor-asignaturas-v2.html">Consultar o modificar calificaciones</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Avisos académicos ====== -->
+    <section class="card mt-4">
+      <div class="card-body">
+        <h2 class="h5 nol-section-title mb-3"><span class="nol-mark"></span>Avisos académicos</h2>
+
+        <div class="nol-aviso">
+          <div class="nol-aviso-ic">!</div>
+          <div>
+            <h3>Publicación de calificaciones provisionales</h3>
+            <p>Ya están disponibles las calificaciones provisionales de la convocatoria ordinaria. Revísalas en tu lista de asignaturas.</p>
+            <span class="nol-aviso-date">Publicado · 02/06/2026</span>
+          </div>
+        </div>
+
+        <div class="nol-aviso">
+          <div class="nol-aviso-ic">i</div>
+          <div>
+            <h3>Periodo de revisión y reclamaciones</h3>
+            <p>El plazo para solicitar revisión de calificaciones permanece abierto del 04/06 al 09/06. Contacta con el profesorado responsable de cada asignatura.</p>
+            <span class="nol-aviso-date">Vigente · 04/06/2026 – 09/06/2026</span>
+          </div>
+        </div>
+
+        <div class="nol-aviso">
+          <div class="nol-aviso-ic">✓</div>
+          <div>
+            <h3>Generación de expediente académico informativo</h3>
+            <p>Puedes generar e imprimir tu expediente con el resumen de calificaciones desde el área de alumnado.</p>
+            <span class="nol-aviso-date">Disponible</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Servicios disponibles ====== -->
+    <section class="card mt-4">
+      <div class="card-body">
+        <h2 class="h5 nol-section-title mb-3"><span class="nol-mark"></span>Servicios disponibles</h2>
+        <div class="nol-services">
+          <div class="nol-service">
+            <div class="nol-service-ic">◈</div>
+            <h3>Consulta de calificaciones</h3>
+            <p>Notas por asignatura con estado de publicación y detalle académico.</p>
+          </div>
+          <div class="nol-service">
+            <div class="nol-service-ic">▤</div>
+            <h3>Expediente imprimible</h3>
+            <p>Resumen de asignaturas y calificaciones en formato certificado.</p>
+          </div>
+          <div class="nol-service">
+            <div class="nol-service-ic">✎</div>
+            <h3>Gestión docente</h3>
+            <p>El profesorado consulta y modifica notas del alumnado de sus asignaturas.</p>
+          </div>
+          <div class="nol-service">
+            <div class="nol-service-ic">∑</div>
+            <h3>Nota media</h3>
+            <p>Cálculo automático de la media por asignatura y por expediente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Ficha de grupo (requisito §9.1 del enunciado) ======
+         SUSTITUYE el identificador de grupo y los nombres por los reales. -->
+    <section class="card mt-4">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <h2 class="h5 nol-section-title mb-0"><span class="nol-mark"></span>Trabajo en grupo · DEW 2025/2026</h2>
+          <span class="nol-badge">Grupo G?</span>
+        </div>
+        <hr>
+        <ol class="row row-cols-1 row-cols-md-2 g-1 mb-0">
+          <li class="col">Apellidos, Nombre (componente 1)</li>
+          <li class="col">Apellidos, Nombre (componente 2)</li>
+          <li class="col">Apellidos, Nombre (componente 3)</li>
+          <li class="col">Apellidos, Nombre (componente 4)</li>
+          <li class="col">Apellidos, Nombre (componente 5)</li>
+          <li class="col">Apellidos, Nombre (componente 6)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ====== Footer institucional ====== -->
+    <footer class="nol-footer">
+      <div class="nol-footer-top">
+        <div>
+          <h4>Notas Online (NOL)</h4>
+          <p>Escuela Técnica Superior de Informática</p>
+        </div>
+        <ul>
+          <li>Curso académico 2025/2026</li>
+          <li>Asignatura: Desarrollo de Entornos Web</li>
+          <li>Soporte: secretaría del centro</li>
+        </ul>
+      </div>
+      <hr>
+      <p class="nol-footer-legal">
+        Portal interno de gestión de calificaciones. La información mostrada tiene carácter
+        informativo y puede estar sujeta a revisión durante los plazos establecidos por el profesorado.
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const logoutBox = document.getElementById("logoutBox");
+
+    if (params.has("logout")) {
+      logoutBox.textContent = "Sesión cerrada correctamente.";
+      logoutBox.classList.remove("d-none");
+
+      setTimeout(()=> {
+        logoutBox.classList.add("d-none");
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

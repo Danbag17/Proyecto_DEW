@@ -40,8 +40,15 @@
 
         <hr>
 
-        <h2 class="h5" id="alumnoNombre"></h2>
-        <p id="alumnoDni" class="text-muted"></p>
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <img id="alumnoFoto" class="nol-foto-expediente" alt="Foto del alumno"
+               src="../fotos/_placeholder.svg">
+          <div>
+            <h2 class="h5 mb-1" id="alumnoNombre"></h2>
+            <p id="alumnoDni" class="text-muted mb-2"></p>
+            <span class="nol-badge" id="alumnoMedia">Nota media: —</span>
+          </div>
+        </div>
 
         <table class="table table-striped mt-4">
           <thead>
@@ -65,6 +72,14 @@
 
       setText('alumnoNombre', getNombreAlumno(alumno));
       setText('alumnoDni', 'DNI: ' + (alumno.dni || ''));
+
+      var foto = document.getElementById('alumnoFoto');
+      if (foto && alumno.dni) {
+        foto.onerror = function () { this.onerror = null; this.src = FOTO_PLACEHOLDER; };
+        foto.src = fotoUrl(alumno.dni);
+      }
+
+      setText('alumnoMedia', 'Nota media: ' + textoMedia(notas));
 
       var body = document.getElementById('expedienteBody');
       var html = '';

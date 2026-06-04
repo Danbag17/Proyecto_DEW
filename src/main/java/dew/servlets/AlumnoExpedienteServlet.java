@@ -3,6 +3,7 @@ package dew.servlets;
 import java.io.IOException;
 
 import dew.client.CentroEducativoClient;
+import dew.util.AsignaturasUtils;
 import dew.util.SessionsUtils;
 
 import jakarta.servlet.ServletException;
@@ -36,6 +37,10 @@ public class AlumnoExpedienteServlet extends HttpServlet {
 
             String jsonAlumno = cliente.getAlumnoPorDNI(dni, key);
             String jsonNotas = cliente.getExpediente(dni, key);
+
+            // El expediente (matrícula) no trae los créditos; se cruzan con el catálogo.
+            String catalogo = cliente.getAsignaturas(key);
+            jsonNotas = AsignaturasUtils.enriquecerConCatalogo(jsonNotas, catalogo);
 
             String resultadoFinal = "{"
                     + "\"datosPersonales\":" + jsonAlumno + ","

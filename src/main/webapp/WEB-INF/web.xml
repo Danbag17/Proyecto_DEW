@@ -5,12 +5,18 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   <display-name>DEW</display-name>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index-v2.html</welcome-file>
     </welcome-file-list>
 
     <context-param>
         <param-name>logFilePath</param-name>
         <param-value>/tmp/nol2526-access.log</param-value>
+    </context-param>
+
+    <!-- Activa (true) o desactiva (false) el registro de accesos sin tocar código. -->
+    <context-param>
+        <param-name>logsHabilitado</param-name>
+        <param-value>true</param-value>
     </context-param>
 
     <!-- ===================== SERVLETS ===================== -->
@@ -103,6 +109,17 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <filter-class>dew.filters.AuthFilter</filter-class>
     </filter>
 
+    <!-- Resetea la sesión al pasar por la página de login (solo REQUEST, para no
+         interferir con el FORWARD interno del login normal de Tomcat). -->
+    <filter>
+        <filter-name>LoginReset</filter-name>
+        <filter-class>dew.filters.LoginResetFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginReset</filter-name>
+        <url-pattern>/login-v2.html</url-pattern>
+    </filter-mapping>
+
     <!-- Zonas HTML por rol -->
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
@@ -194,9 +211,31 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <auth-method>FORM</auth-method>
         <realm-name>Notas OnLine</realm-name>
         <form-login-config>
-            <form-login-page>/login.html</form-login-page>
-            <form-error-page>/login.html?error=1</form-error-page>
+            <form-login-page>/login-v2.html</form-login-page>
+            <form-error-page>/login-error-v2.html</form-error-page>
         </form-login-config>
     </login-config>
+
+    <!-- ===================== PAGINAS DE ERROR ===================== -->
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error/401.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error/403.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.html</location>
+    </error-page>
 
 </web-app>

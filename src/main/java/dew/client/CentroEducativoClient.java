@@ -216,7 +216,11 @@ public class CentroEducativoClient {
             String key)
             throws IOException {
 
-        String json = "{\"nota\":" + nota + "}";
+        /*
+         * El backend rechaza con HTTP 406 el cuerpo {"nota": 9.5}.
+         * Acepta el número raw como JSON: 9.5
+         */
+        String body = Double.toString(nota);
 
         Request request = new Request.Builder()
                 .url(BASE_URL
@@ -226,8 +230,8 @@ public class CentroEducativoClient {
                         + enc(acronimo)
                         + "?key="
                         + enc(key))
-                .put(RequestBody.create(json, JSON))
-                .addHeader("accept", "application/json")
+                .put(RequestBody.create(body, JSON))
+                .addHeader("Accept", "application/json, text/plain, */*")
                 .build();
 
         return executeAllowEmpty(request);

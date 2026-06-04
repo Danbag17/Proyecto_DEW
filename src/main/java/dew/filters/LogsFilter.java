@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class LogsFilter implements Filter {
 
     private String logFilePath;
+    private boolean habilitado;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,6 +27,14 @@ public class LogsFilter implements Filter {
         if (logFilePath == null || logFilePath.isBlank()) {
             throw new ServletException("No se ha definido logFilePath en web.xml");
         }
+
+        /*
+         * El operador puede activar/desactivar el log de forma sencilla con el
+         * parámetro de aplicación 'logsHabilitado' en web.xml (true/false).
+         * Si no está definido, por defecto el log queda ACTIVADO.
+         */
+        String valor = context.getInitParameter("logsHabilitado");
+        habilitado = (valor == null) || valor.isBlank() || Boolean.parseBoolean(valor.trim());
     }
 
     @Override
@@ -34,7 +43,7 @@ public class LogsFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        if (!esRecursoEstatico(httpRequest.getRequestURI())) {
+        if (habilitado && !esRecursoEstatico(httpRequest.getRequestURI())) {
             registrarAcceso(httpRequest);
         }
 

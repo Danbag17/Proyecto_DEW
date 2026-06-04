@@ -2,6 +2,10 @@ package dew.servlets;
 
 import java.io.IOException;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import dew.client.CentroEducativoClient;
 import dew.util.SessionsUtils;
 import jakarta.servlet.ServletException;
@@ -35,11 +39,61 @@ public class AsignaturaAlumnosServlet extends HttpServlet {
         String key = SessionsUtils.getKey(request);
 
         try {
-            String json = new CentroEducativoClient().getAlumnosDeAsignatura(asig, key);
-            writeJson(response, json);
+            CentroEducativoClient cliente = new CentroEducativoClient();
+            String json = cliente.getAlumnosDeAsignatura(asig, key);
+
+            // El endpoint de alumnos por asignatura solo devuelve dni + nota.
+            // Enriquecemos cada alumno con nombre/apellidos para la ficha.
+            String enriquecido = enriquecerConNombres(json, key, cliente);
+
+            writeJson(response, enriquecido);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Error obteniendo alumnos de la asignatura: " + e.getMessage());
+        }
+    }
+
+    /*
+     * Para cada elemento {alumno, nota} añade nombre y apellidos consultando
+     * /alumnos/{dni}. Es "best effort": si una consulta falla (p. ej. por
+     * permisos), se deja el alumno tal cual y la vista mostrará el DNI.
+     */
+    private String enriquecerConNombres(String json, String key, CentroEducativoClient cliente) {
+        try {
+            JsonArray alumnos = JsonParser.parseString(json).getAsJsonArray();
+
+            for (int i = 0; i < alumnos.size(); i++) {
+                JsonObject obj = alumnos.get(i).getAsJsonObject();
+
+                String dni = obj.has("alumno") ? obj.get("alumno").getAsString()
+                        : (obj.has("dni") ? obj.get("dni").getAsString() : null);
+
+                if (dni == null || dni.isBlank()) {
+                    continue;
+                }
+
+                obj.addProperty("dni", dni);
+
+                try {
+                    JsonObject datos = JsonParser
+                            .parseString(cliente.getAlumnoPorDNI(dni, key))
+                            .getAsJsonObject();
+
+                    if (datos.has("nombre")) {
+                        obj.add("nombre", datos.get("nombre"));
+                    }
+                    if (datos.has("apellidos")) {
+                        obj.add("apellidos", datos.get("apellidos"));
+                    }
+                } catch (Exception ignored) {
+                    // Sin nombre: la ficha mostrará el DNI.
+                }
+            }
+
+            return alumnos.toString();
+        } catch (Exception e) {
+            // Si el JSON no es el array esperado, lo devolvemos sin tocar.
+            return json;
         }
     }
 

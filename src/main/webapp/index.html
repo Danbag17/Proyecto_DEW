@@ -8,37 +8,102 @@
   <link rel="stylesheet" href="css/nol.css">
 </head>
 <body class="bg-light">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">NOL 25/26</a>
+      <div class="ms-auto">
+        <a class="btn btn-outline-warning btn-sm" href="LogoutServlet">Cerrar sesión</a>
+      </div>
+    </div>
+  </nav>
+
   <main class="container py-5">
     <section class="p-5 bg-dark text-white rounded-4 shadow">
-      <h1 class="display-5">Notas Online</h1>
-      <p class="lead mb-0">Consulta y gestión de calificaciones mediante servlets, AJAX y CentroEducativo.</p>
+      <div>
+        <h1 class="display-5">Bienvenid@ a Notas Online</h1>
+        <p class="lead mb-0">
+          El portal académico para consultar y gestionar las calificaciones del centro.
+          Identifícate como <strong>alumno</strong> para revisar tus notas y tu expediente,
+          o como <strong>profesor</strong> para consultar y modificar las calificaciones de
+          tus asignaturas.
+        </p>
+      </div>
     </section>
+
+    <div class="alert alert-success d-none mt-4" id="logoutBox" role="alert"></div>
 
     <section class="row g-4 mt-2">
       <div class="col-md-6">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h2 class="h4">Alumnado</h2>
-            <p>Consulta tus asignaturas, notas y expediente imprimible.</p>
-           <a class="btn btn-primary" href="alumno/alumno-asignaturas.html">Consultar calificaciones</a>
+        <div class="card h-100 shadow-sm nol-card-accent">
+          <div class="card-body d-flex flex-column">
+            <span class="nol-badge mb-2">Si eres alumn@…</span>
+            <h2 class="h4">Consulta tus calificaciones</h2>
+            <p class="text-muted">
+              Accede a la lista de asignaturas en las que estás matriculad@, revisa la nota de
+              cada una y genera tu <strong>expediente</strong> con foto, listo para imprimir.
+              Necesitarás tus datos identificativos para acceder.
+            </p>
+            <a class="btn btn-primary mt-auto" href="alumno/alumno-asignaturas.html">Consultar calificaciones</a>
           </div>
         </div>
       </div>
 
       <div class="col-md-6">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h2 class="h4">Profesorado</h2>
-            <p>Consulta asignaturas, alumnado matriculado y modifica calificaciones.</p>
-            <a class="btn btn-success" href="profesor/profesor-asignaturas.html">Consultar o modificar calificaciones</a>
+        <div class="card h-100 shadow-sm nol-card-accent">
+          <div class="card-body d-flex flex-column">
+            <span class="nol-badge mb-2">Si eres profesor@…</span>
+            <h2 class="h4">Consulta o modifica calificaciones</h2>
+            <p class="text-muted">
+              Revisa las asignaturas que impartes, navega por las fichas del alumnado matriculado,
+              consulta la <strong>nota media</strong> de cada asignatura y ajusta las calificaciones.
+              Necesitarás tus datos identificativos para acceder.
+            </p>
+            <a class="btn btn-success mt-auto" href="profesor/profesor-asignaturas.html">Consultar o modificar calificaciones</a>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="text-muted mt-5 small">
-      Grupo: Gx · Componentes: sustituir por nombres reales del grupo.
+    <!-- ====== Ficha de grupo (requisito §9.1 del enunciado) ======
+         SUSTITUYE el identificador de grupo y los nombres por los reales. -->
+    <section class="card shadow-sm mt-4">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <h2 class="h5 mb-0">Trabajo en grupo · DEW 2025/2026</h2>
+          <span class="nol-badge">Grupo G?</span>
+        </div>
+        <hr>
+        <ol class="row row-cols-1 row-cols-md-2 g-1 mb-0">
+          <li class="col">Apellidos, Nombre (componente 1)</li>
+          <li class="col">Apellidos, Nombre (componente 2)</li>
+          <li class="col">Apellidos, Nombre (componente 3)</li>
+          <li class="col">Apellidos, Nombre (componente 4)</li>
+          <li class="col">Apellidos, Nombre (componente 5)</li>
+          <li class="col">Apellidos, Nombre (componente 6)</li>
+        </ol>
+      </div>
+    </section>
+
+    <footer class="text-muted mt-4 small">
+      Notas Online (NOL) · Asignatura Desarrollo de Entornos Web · Curso 2025/2026.
     </footer>
   </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const logoutBox = document.getElementById("logoutBox");
+   
+	
+	
+	if (params.has("logout")) {
+      logoutBox.textContent = "Sesión cerrada correctamente.";
+      logoutBox.classList.remove("d-none");
+
+      setTimeout(()=> {
+    	  logoutBox.classList.add("d-none");
+    	  window.history.replaceState({}, document.title, window.location.pathname);
+      }, 3000);
+    }
+  </script>
 </body>
 </html>

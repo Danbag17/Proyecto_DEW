@@ -18,8 +18,12 @@
   </nav>
 
   <main class="container py-4">
-    <h1 class="h3">Mis asignaturas</h1>
-    <p class="text-muted">Selecciona una asignatura para ver alumnos y modificar notas.</p>
+    <h1 class="h3 nol-page-title">Mis asignaturas</h1>
+    <p class="text-muted">
+      Estas son las asignaturas que impartes este curso. En cada tarjeta verás la
+      <strong>nota media</strong> del alumnado matriculado. Pulsa «Ver alumnado» para
+      consultar las fichas individuales y modificar calificaciones.
+    </p>
 
     <div class="alert alert-danger d-none" id="errorBox"></div>
     <div class="row g-3" id="asignaturasBox"></div>
@@ -27,31 +31,63 @@
 
   <script src="../js/api.js"></script>
   <script>
+    function detalleAsignatura(a) {
+      var partes = [];
+      if (a.curso) partes.push('Curso ' + a.curso);
+      if (a.cuatrimestre) partes.push('Cuatrimestre ' + a.cuatrimestre);
+      if (a.creditos) partes.push(a.creditos + ' créditos');
+      return partes.join(' · ');
+    }
+
+    // Carga asíncrona de la media de una asignatura concreta y la pinta en su tarjeta.
+    function cargarMedia(acr) {
+      ajax(API.profesorAlumnos(acr)).then(function (data) {
+        var alumnos = safeArray(data);
+        var span = document.getElementById('media_' + acr);
+        if (span) span.textContent = 'Nota media: ' + textoMedia(alumnos);
+      }).catch(function () {
+        var span = document.getElementById('media_' + acr);
+        if (span) span.textContent = 'Nota media: n/d';
+      });
+    }
+
     function renderAsignaturas(data) {
       var box = document.getElementById('asignaturasBox');
       var asignaturas = safeArray(data);
 
       if (!asignaturas.length) {
-        box.innerHTML = '<div class="col-12"><div class="alert alert-info">No hay asignaturas disponibles.</div></div>';
+        box.innerHTML = '<div class="col-12"><div class="alert alert-info">Todavía no tienes asignaturas asignadas.</div></div>';
         return;
       }
 
       var html = '';
+      var acrs = [];
       for (var i = 0; i < asignaturas.length; i++) {
         var a = asignaturas[i];
         var acr = getAcronimo(a);
+        acrs.push(acr);
+
         html += '<div class="col-md-4">';
-        html += '  <div class="card h-100 shadow-sm">';
-        html += '    <div class="card-body">';
-        html += '      <h2 class="h5">' + acr + '</h2>';
-        html += '      <p class="mb-1">' + getNombreAsignatura(a) + '</p>';
-        html += '      <a class="btn btn-success btn-sm" href="profesor-alumnos.html?asig=' + encodeURIComponent(acr) + '">Ver alumnos</a>';
+        html += '  <div class="card h-100 shadow-sm nol-card-accent">';
+        html += '    <div class="card-body d-flex flex-column">';
+        html += '      <div class="d-flex justify-content-between align-items-start">';
+        html += '        <h2 class="h5 mb-1">' + acr + '</h2>';
+        html += '      </div>';
+        html += '      <p class="mb-1 fw-semibold">' + getNombreAsignatura(a) + '</p>';
+        html += '      <p class="text-muted small mb-2">' + detalleAsignatura(a) + '</p>';
+        html += '      <span class="nol-badge mb-3" id="media_' + acr + '">Nota media: …</span>';
+        html += '      <a class="btn btn-success btn-sm mt-auto" href="profesor-alumnos.html?asig=' + encodeURIComponent(acr) + '">Ver alumnado</a>';
         html += '    </div>';
         html += '  </div>';
         html += '</div>';
       }
 
       box.innerHTML = html;
+
+      // Una vez pintadas las tarjetas, pedimos la media de cada una.
+      for (var j = 0; j < acrs.length; j++) {
+        cargarMedia(acrs[j]);
+      }
     }
 
     ajax(API.profesorAsignaturas).then(renderAsignaturas).catch(showError);
