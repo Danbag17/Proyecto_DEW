@@ -26,8 +26,8 @@
     <div class="row g-3" id="asignaturasBox"></div>
   </main>
 
-
   <script src="../js/api.js"></script>
+  
   <script>
     function renderAsignaturas(data) {
       var box = document.getElementById('asignaturasBox');
@@ -62,5 +62,6 @@
 
     ajax(API.alumnoAsignaturas).then(renderAsignaturas).catch(showError);
   </script>
+  
 </body>
 </html>

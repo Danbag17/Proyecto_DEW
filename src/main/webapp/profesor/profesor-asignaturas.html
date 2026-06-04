@@ -9,14 +9,13 @@
 </head>
 <body class="bg-light">
   <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="profesor-asignaturas.html">NOL Profesor</a>
-      <div class="ms-auto">
-        <button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
-      </div>
-    </div>
-  </nav>
-
+			<div class="container">
+				<a class="navbar-brand" href="profesor-asignaturas.html">NOL 25/26</a>
+				<div class="ms-auto">
+					<button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
+				</div>
+			</div>
+		</nav>
   <main class="container py-4">
     <h1 class="h3 nol-page-title">Mis asignaturas</h1>
     <p class="text-muted">
@@ -29,7 +28,7 @@
     <div class="row g-3" id="asignaturasBox"></div>
   </main>
 
-  <script src="../js/api.js"></script>
+  	<script src="../js/api.js"></script>
   <script>
     function detalleAsignatura(a) {
       var partes = [];
@@ -92,5 +91,6 @@
 
     ajax(API.profesorAsignaturas).then(renderAsignaturas).catch(showError);
   </script>
+  	
 </body>
 </html>

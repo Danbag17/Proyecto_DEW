@@ -92,6 +92,16 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+		<servlet-name>ErrorHandler</servlet-name>
+	    <servlet-class>dew.servlets.ErrorHandler</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>ErrorHandler</servlet-name>
+	    <url-pattern>/ErrorHandler</url-pattern>
+	</servlet-mapping>
 
     <!-- ===================== FILTROS ===================== -->
 
@@ -186,9 +196,9 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <web-resource-collection>
             <web-resource-name>Area de Profesores</web-resource-name>
             <url-pattern>/profesor/*</url-pattern>
-            <url-pattern>/ProfesorAsignaturasServlet</url-pattern>
-            <url-pattern>/AsignaturaAlumnosServlet</url-pattern>
-            <url-pattern>/ModificarNotaServlet</url-pattern>
+            <!-- <url-pattern>/ProfesorAsignaturasServlet</url-pattern> -->
+            <!--<url-pattern>/AsignaturaAlumnosServlet</url-pattern>-->
+            <!--<url-pattern>/ModificarNotaServlet</url-pattern>-->
         </web-resource-collection>
         <auth-constraint>
             <role-name>rolpro</role-name>
@@ -215,6 +225,23 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
             <form-error-page>/login-error-v2.html</form-error-page>
         </form-login-config>
     </login-config>
+    
+    <error-page>
+   	 	<error-code>404</error-code>
+  		<location>/ErrorHandler</location>
+	</error-page>
+	
+	
+	
+	<error-page>
+	    <error-code>403</error-code>
+	    <location>/ErrorHandler</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/ErrorHandler</location>
+	</error-page>
 
     <!-- ===================== PAGINAS DE ERROR ===================== -->
 
