@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-API_URL="${API_URL:-http://172.23.189.79:9090/CentroEducativo}"
+API_URL="${API_URL:-http://127.0.0.1:9090/CentroEducativo}"
 COOKIE_ADMIN="${COOKIE_ADMIN:-/tmp/nol2526-admin-cookies.txt}"
 COOKIE_PROF_AVA="${COOKIE_PROF_AVA:-/tmp/nol2526-prof-ava-cookies.txt}"
 ADMIN_DNI="111111111"
@@ -149,17 +149,17 @@ echo "Profesor Ava autenticado. KEY_PROF_AVA=$KEY_PROF_AVA"
 
 # Vinculaciones profesor-asignatura.
 # Si alguna ruta falla, revisar endpoint exacto en Swagger.
-post_ignore "$API_URL/asignaturas/DEW/profesores?key=$KEY_ADMIN" \
-  '"22222222P"' \
-  "Ava imparte DEW" "$COOKIE_ADMIN"
+post_ignore "$API_URL/profesores/22222222P/asignaturas?key=$KEY_PROF_AVA" \
+   '"DEW"' \
+   "Ava imparte DEW" "$COOKIE_PROF_AVA"
 
-post_ignore "$API_URL/asignaturas/GPR/profesores?key=$KEY_ADMIN" \
-  '"22222222P"' \
-  "Ava imparte GPR" "$COOKIE_ADMIN"
+post_ignore "$API_URL/profesores/22222222P/asignaturas?key=$KEY_PROF_AVA" \
+   '"GPR"' \
+   "Ava imparte GPR" "$COOKIE_PROF_AVA"
 
-post_ignore "$API_URL/asignaturas/SEG/profesores?key=$KEY_ADMIN" \
-  '"22222222P"' \
-  "Ava imparte SEG" "$COOKIE_ADMIN"
+post_ignore "$API_URL/profesores/22222222P/asignaturas?key=$KEY_PROF_AVA" \
+   '"SEG"' \
+   "Ava imparte SEG" "$COOKIE_PROF_AVA"
 
 # Matrículas.
 # Normalmente estas operaciones requieren que el usuario sea profesor de la asignatura.

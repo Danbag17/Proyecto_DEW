@@ -1,220 +1,207 @@
-# Acta de sesión de integración y estabilización
+Acta 05 – Integración técnica, revisión funcional y estabilización del Hito 1
 
-## Fecha
+Asignatura: Desarrollo Web (DEW) – Curso 2025/2026
+Grupo: G14 – 3TI21
+Reunión nº: 5
+Fecha: 18/05/2026
+Hora: 18:00 h
+Lugar: Coordinación remota mediante WhatsApp, GitHub y Eclipse
+Secretaria: Vanesa Carolina Castro Bello
 
-20/05/2026
+1. Participantes
+Nombre y apellidos	Grupo
+Vanesa Carolina Castro Bello	3TI21
+Mikel Escudero Aramburu	3TI21
+Carlos Moldes Peña	3TI21
+Pau Oroval González	3TI21
+Michal Pojnar	3TI21
+Daniel Zanon Barney	3TI21
+2. Orden del día
+Revisión del estado técnico del proyecto.
+Integración de los componentes desarrollados por los distintos miembros del grupo.
+Revisión de la comunicación con CentroEducativo.
+Análisis de incidencias detectadas durante las pruebas.
+Revisión del poblado de datos y consultas REST.
+Coordinación de ramas e integración en GitHub.
+Revisión de configuración y seguridad.
+Organización del trabajo pendiente antes de la entrega.
+3. Desarrollo de la reunión
+3.1. Revisión general del estado del proyecto
 
-## Asistentes
+Durante la sesión se realizó una revisión exhaustiva del estado actual del proyecto con el objetivo de evaluar el progreso alcanzado desde la sesión anterior y determinar el trabajo restante necesario para completar el Hito 1.
 
-- Equipo de desarrollo del proyecto NOL 25/26
+Se constató que el proyecto ya dispone de una estructura funcional claramente definida y que la mayor parte del trabajo organizativo realizado durante las sesiones anteriores ha permitido comenzar una fase centrada principalmente en integración, pruebas y resolución de incidencias.
 
-## Objetivo de la sesión
+En particular, se verificó la existencia de:
 
-Revisar el estado actual del repositorio, consolidar la versión funcional de la aplicación, corregir inconsistencias detectadas en la integración de vistas, servlets, filtros y configuración de despliegue, y organizar las tareas pendientes antes de la entrega.
+estructura definitiva de paquetes Java
+servlets principales del proyecto
+cliente REST para CentroEducativo
+utilidades de sesión
+documentación técnica inicial
+configuración de autenticación
+estructura web y recursos estáticos
+repositorio GitHub operativo
 
-Durante la sesión se priorizó dejar una base común estable para que el equipo pueda continuar trabajando sobre una versión probada, evitando volver a introducir cambios parciales o versiones desactualizadas.
+Se concluye que el proyecto ha superado la fase de preparación y entra en una etapa donde la prioridad pasa a ser la consolidación funcional de todos los componentes desarrollados.
 
-## Estado inicial revisado
+3.2. Integración entre autenticación y CentroEducativo
 
-Durante la revisión se detectaron varios puntos que requerían corrección o consolidación:
+Uno de los principales temas tratados durante esta reunión fue la integración entre el sistema de autenticación web y la API REST de CentroEducativo.
 
-- Existían servlets con implementación incompleta o generada por defecto por Eclipse, especialmente en partes del flujo de alumno y profesor.
-- Algunas vistas HTML no estaban conectadas correctamente con los servlets y seguían funcionando como maquetas estáticas o con contenido de prueba.
-- Había inconsistencias en las rutas de recursos estáticos, principalmente en la carga de CSS desde páginas ubicadas en distintos niveles del proyecto (`index.html`, `login.html`, `alumno/`, `profesor/`).
-- El archivo `web.xml` contenía mappings y configuraciones que requerían revisión para alinear correctamente servlets, filtros, roles y rutas protegidas.
-- El flujo de autenticación mediante Tomcat FORM auth y `j_security_check` necesitaba quedar alineado con el login, el `AuthFilter` y la sesión propia de la aplicación.
-- El logout necesitaba limpiar correctamente tanto la sesión HTTP como el estado de autenticación gestionado por Tomcat.
-- Algunas funciones JavaScript utilizadas por las vistas requerían centralización o revisión para evitar duplicidad y errores de integración.
-- Se detectaron comportamientos inconsistentes en Tomcat/Eclipse derivados del despliegue incremental, por lo que fue necesario limpiar, reconstruir y redeplegar el proyecto.
-- Se revisaron los scripts de poblado y las llamadas al backend CentroEducativo para asegurar que los datos de prueba fueran coherentes con los flujos de alumno y profesor.
+Durante las pruebas realizadas se observó que la autenticación del usuario y la recuperación de información académica debían coordinarse correctamente para garantizar que las consultas posteriores pudieran realizarse utilizando la información obtenida durante el login.
 
-## Trabajo realizado durante la sesión
+Se revisó especialmente:
 
-### Autenticación y sesión
+obtención de la session key
+almacenamiento de la clave en sesión
+reutilización de la clave en peticiones posteriores
+coordinación entre autenticación Tomcat y autenticación REST
 
-- Se revisó el flujo de autenticación basado en Tomcat FORM auth.
-- Se mantuvo el uso de `j_security_check` como mecanismo principal de autenticación.
-- Se revisó el `AuthFilter` para asegurar que actúe después de la autenticación de Tomcat y obtenga la `key` necesaria para comunicarse con CentroEducativo.
-- Se centralizó el acceso a los datos de sesión (`dni`, `password`, `key`) mediante `SessionsUtils`.
-- Se revisó la exclusión de recursos estáticos y de `j_security_check` dentro de los filtros para evitar interferencias con CSS, JS, imágenes o el propio proceso de login.
+El grupo confirmó que la arquitectura prevista seguía siendo válida:
 
-### Logout y cambio de usuario
+El usuario se autentica mediante Tomcat.
+Se realiza la autenticación contra CentroEducativo.
+Se obtiene una session key.
+La clave se almacena en sesión HTTP.
+Los servlets utilizan posteriormente dicha clave para realizar consultas autenticadas.
 
-- Se revisó `LogoutServlet` para garantizar que el cierre de sesión invalide correctamente la sesión de la aplicación.
-- Se incorporó la llamada a `request.logout()` antes de invalidar la sesión para limpiar también el principal autenticado por Tomcat.
-- Se planificó revisar el caso de cambio de usuario, especialmente el flujo alumno → logout → profesor y profesor → logout → alumno.
+Se acordó continuar trabajando sobre esta integración hasta estabilizar completamente el flujo.
 
-### Vistas de alumno
+3.3. Problemas detectados en la recuperación de notas
 
-- Se revisaron e integraron las vistas del alumno:
-  - `alumno/alumno-asignaturas.html`
-  - `alumno/alumno-detalle.html`
-  - `alumno/alumno-expediente.html`
-- Se consolidó el consumo de datos mediante peticiones AJAX a los servlets correspondientes.
-- Se revisó la navegación entre listado de asignaturas, detalle de asignatura y expediente.
-- Se eliminaron o dejaron fuera del flujo principal vistas antiguas o duplicadas que podían generar confusión.
+Durante la revisión funcional se detectó una incidencia especialmente relevante relacionada con la visualización de calificaciones.
 
-### Vistas de profesor
+Al realizar determinadas consultas, algunas notas no aparecían correctamente reflejadas en las respuestas obtenidas desde CentroEducativo, pese a que aparentemente se habían realizado operaciones de inserción o modificación sobre los datos.
 
-- Se revisaron e integraron las vistas del profesor:
-  - `profesor/profesor-asignaturas.html`
-  - `profesor/profesor-alumnos.html`
-- Se revisó el flujo profesor → asignaturas → alumnos de una asignatura.
-- Se preparó la vista de alumnos para permitir la edición de notas desde la interfaz.
-- Se identificó que la modificación de notas requiere una verificación final del formato exacto aceptado por el backend.
+Ante esta situación, Carlos Moldes Peña inició una revisión más profunda del comportamiento de la API y de los formatos utilizados en las peticiones REST.
 
-### Rutas estáticas y recursos
+Se consideraron diversas posibles causas:
 
-- Se revisó la carga de `nol.css` desde todas las vistas.
-- Se ajustó el criterio de rutas según la ubicación de cada HTML:
-  - En vistas dentro de `alumno/` y `profesor/`, rutas relativas hacia recursos comunes.
-  - En `login.html`, rutas absolutas al contexto cuando sea necesario por el comportamiento de Tomcat durante FORM auth.
-- Se documentó la necesidad de limpiar Tomcat/Eclipse cuando los cambios de HTML/CSS no se reflejen en el navegador.
+errores en el formato JSON enviado
+diferencias entre la documentación y el comportamiento real de la API
+problemas de persistencia
+datos incompletos en el entorno de pruebas
 
-### JavaScript y comunicación AJAX
+Se acuerda continuar contrastando los resultados obtenidos con la documentación Swagger y realizar pruebas adicionales mediante herramientas externas cuando sea necesario.
 
-- Se revisó `api.js` como punto común para:
-  - construir rutas a servlets;
-  - hacer peticiones AJAX;
-  - gestionar errores;
-  - normalizar datos recibidos del backend;
-  - ejecutar logout desde las vistas.
-- Se corrigieron funciones utilizadas por las vistas que no estaban definidas o no estaban centralizadas correctamente.
+3.4. Revisión del poblado de datos
 
-### Servlets
+Como consecuencia de las incidencias detectadas durante las consultas REST, el grupo dedicó parte de la sesión a revisar el estado del poblado de datos disponible en CentroEducativo.
 
-- Se revisaron e implementaron los servlets necesarios para los flujos de alumno y profesor.
-- Se consolidó la devolución de JSON desde los servlets en lugar de depender de `forward()` hacia HTML estático.
-- Se revisó la validación de sesión y rol en los servlets.
-- Se revisó la integración entre los servlets y `CentroEducativoClient`.
-- Se corrigieron nombres y mappings para evitar referencias a clases antiguas o inconsistentes.
+Se observó que algunos comportamientos anómalos podían estar relacionados no con errores de programación, sino con la ausencia de determinadas entidades académicas necesarias para realizar pruebas completas.
 
-### Cliente CentroEducativo
+Se concluyó que era necesario revisar cuidadosamente:
 
-- Se revisó `CentroEducativoClient` como punto central de comunicación con el backend.
-- Se consolidaron métodos para:
-  - login contra CentroEducativo;
-  - obtener asignaturas;
-  - obtener asignaturas del alumno;
-  - obtener expediente;
-  - obtener datos del alumno;
-  - obtener asignaturas del profesor;
-  - obtener alumnos de una asignatura;
-  - modificar notas.
-- Se revisó el endpoint usado para las asignaturas del profesor, confirmando que debe alinearse con la API real del backend.
-- Se identificó que el formato de modificación de nota debe verificarse contra Swagger o mediante pruebas directas, ya que el backend puede esperar un valor numérico directo en lugar de un objeto JSON.
+alumnos existentes
+profesores registrados
+asignaturas disponibles
+matrículas
+calificaciones asociadas
 
-### Configuración `web.xml`
+Asimismo, se acordó verificar el funcionamiento de los scripts de poblado utilizados por el grupo para asegurar que el entorno de pruebas reflejase correctamente los escenarios previstos.
 
-- Se revisó la configuración general del despliegue.
-- Se organizaron servlets, filtros, mappings y restricciones de seguridad.
-- Se revisaron las zonas protegidas:
-  - zona de alumno;
-  - zona de profesor;
-  - endpoints AJAX asociados.
-- Se mantuvo el login mediante FORM auth con `login.html`.
-- Se detectó la conveniencia de añadir páginas de error personalizadas para evitar mostrar las páginas por defecto de Tomcat.
+3.5. Integración de componentes desarrollados
 
-### Pruebas básicas realizadas
+Durante esta sesión se avanzó también en la integración de los distintos componentes desarrollados por los miembros del equipo.
 
-Durante la sesión se revisaron los siguientes flujos:
+Se revisaron especialmente:
 
-- Acceso desde `index.html` hacia zona protegida.
-- Redirección al login mediante Tomcat.
-- Login con carga correcta de estilos.
-- Acceso a vistas del alumno.
-- Navegación de alumno entre asignaturas, detalle y expediente.
-- Acceso a vistas del profesor.
-- Consulta de asignaturas del profesor.
-- Consulta de alumnos de una asignatura.
-- Revisión del logout.
-- Verificación de que los cambios se reflejan tras limpiar y redeplegar el proyecto en Tomcat/Eclipse.
+servlets del alumnado
+utilidades de sesión
+filtros
+cliente REST
+configuración de autenticación
 
-## Incidencias detectadas
+Se comprobó que varios componentes ya podían comenzar a trabajar conjuntamente, aunque todavía quedaban ajustes necesarios para garantizar una integración completamente estable.
 
-### Despliegue en Tomcat/Eclipse
+El grupo coincidió en que la prioridad ya no debía centrarse en crear nuevas clases o estructuras, sino en asegurar que los elementos existentes funcionasen correctamente como un sistema único.
 
-Se detectó que, en algunos casos, Eclipse/Tomcat seguía sirviendo versiones antiguas de archivos HTML, CSS o configuración. Para resolverlo se utilizó el siguiente procedimiento:
+3.6. Problemas de integración y conflictos Git
 
-1. Parar Tomcat.
-2. Ejecutar `Clean...` sobre el servidor.
-3. Ejecutar `Clean Tomcat Work Directory...`.
-4. Ejecutar `Project > Clean...`.
-5. Reiniciar Tomcat.
-6. Recargar el navegador con caché desactivada o mediante recarga dura.
+A medida que aumentó el número de componentes desarrollados simultáneamente comenzaron a aparecer conflictos derivados de la integración de ramas.
 
-Este procedimiento queda documentado como parte del flujo de depuración del equipo.
+Los principales problemas detectados estuvieron relacionados con:
 
-### Caché del navegador
+modificaciones simultáneas sobre archivos comunes
+diferencias entre versiones locales y remotas
+conflictos durante los merges
+cambios concurrentes sobre configuración
 
-Se observó que el navegador podía conservar recursos estáticos antiguos. Queda pendiente reforzar este punto añadiendo cabeceras `Cache-Control` adecuadas en las respuestas de zonas protegidas.
+Entre todos los archivos afectados destacó especialmente:
 
-### Control de versiones
+web.xml
 
-Se revisó la importancia de trabajar siempre sobre una versión actualizada del repositorio. Se acordó evitar trabajar sobre ramas muy atrasadas y hacer pull/rebase antes de empezar nuevas tareas.
+que se convirtió en uno de los puntos más sensibles del proyecto debido a que centraliza:
 
-### Riesgo de sobrescritura
+servlets
+filtros
+autenticación
+restricciones de seguridad
+mapeos de URL
 
-Se detectó que algunos archivos con lógica previa podían ser sustituidos accidentalmente por versiones incompletas o stubs. Se acuerda revisar el historial del archivo antes de modificar servlets o vistas principales.
+Por este motivo se acordó extremar las precauciones al modificar dicho archivo.
 
-## Estado funcional tras la sesión
+3.7. Revisión de configuración y seguridad
 
-| Funcionalidad | Estado | Observaciones |
-|---|---|---|
-| Login con Tomcat FORM auth | Funcional | Requiere mantener rutas correctas en `login.html` y configuración coherente en `web.xml`. |
-| Carga de CSS en login e index | Funcional | Validado tras limpiar y redeplegar Tomcat. |
-| Navegación alumno | Funcional | Asignaturas, detalle y expediente integrados con AJAX. |
-| Navegación profesor | Funcional | Asignaturas y alumnos por asignatura integrados. |
-| Consulta de alumnos por asignatura | Funcional | Flujo profesor revisado. |
-| Logout | Implementado | Pendiente probar cambio de usuario en varios escenarios. |
-| Modificación de notas | Pendiente de verificación final | Hay que confirmar el formato exacto esperado por el backend. |
-| Control de roles | Implementado | Pendiente de pruebas manuales completas alumno/profesor. |
-| Páginas de error personalizadas | Pendiente | Recomendado añadir 403/404/500. |
-| Foto del alumno en expediente | Pendiente | Valorar backend o placeholder local. |
-| Caché tras logout | Pendiente | Añadir cabeceras anti-caché. |
+Se revisó igualmente el estado de la configuración general del proyecto.
 
-## Acuerdos
+Durante esta revisión se confirmó que la seguridad debía continuar apoyándose principalmente en:
 
-- Trabajar sobre la versión funcional actual del repositorio.
-- Confirmar antes de seguir que `git status` está limpio y que todos los cambios importantes están commiteados.
-- Hacer `git pull --rebase origin master` antes de empezar nuevas tareas.
-- Probar en local antes de hacer push.
-- Evitar subir servlets o vistas sin comprobar el flujo afectado.
-- Mantener commits pequeños y descriptivos.
-- Documentar cambios relevantes en `docs/`.
-- Repartir las tareas pendientes y revisarlas en la siguiente sesión.
-- Crear una versión estable etiquetada cuando pasen las pruebas principales.
+autenticación gestionada por Tomcat
+control de acceso mediante roles
+gestión de sesiones
+restricciones declaradas en web.xml
 
-## División de tareas pendientes
+El grupo considera que esta aproximación permite mantener una arquitectura más sencilla y alineada con los requisitos establecidos para el proyecto.
 
-| Tarea | Descripción | Prioridad | Responsable | Estado |
-|---|---|---|---|---|
-| Modificación de notas | Confirmar formato aceptado por el backend y ajustar `CentroEducativoClient.modificarNota` si es necesario. | Alta | A confirmar por el grupo | Pendiente |
-| Pruebas de modificación de notas | Probar el flujo profesor → asignatura → alumno → modificar nota → comprobar persistencia. | Alta | A confirmar por el grupo | Pendiente |
-| Logout / cambio de usuario | Probar alumno → logout → profesor y profesor → logout → alumno. | Alta | A confirmar por el grupo | Pendiente |
-| Caché tras logout | Añadir cabeceras `Cache-Control` para evitar mostrar vistas protegidas tras cerrar sesión. | Media | A confirmar por el grupo | Pendiente |
-| Páginas de error personalizadas | Crear páginas 403/404/500 y mapearlas en `web.xml`. | Media | A confirmar por el grupo | Pendiente |
-| Foto / placeholder de alumno | Añadir placeholder en expediente y estudiar si el backend devuelve imagen real. | Baja | A confirmar por el grupo | Pendiente |
-| Pruebas de roles | Verificar que alumno no accede a profesor y profesor no accede a alumno. | Alta | A confirmar por el grupo | Pendiente |
-| Pruebas flujo alumno | Validar asignaturas, detalle, expediente e impresión. | Alta | A confirmar por el grupo | Pendiente |
-| Pruebas flujo profesor | Validar asignaturas, alumnos y modificación de notas. | Alta | A confirmar por el grupo | Pendiente |
-| Revisión de scripts de poblado | Confirmar que los datos de prueba dejan correctamente relacionados profesores, asignaturas y alumnos. | Media | A confirmar por el grupo | Pendiente |
-| Revisión documentación | Revisar acta, recapitulación técnica y resumen para entrevista. | Media | A confirmar por el grupo | Pendiente |
-| Preparación entrevista | Repartir explicación de autenticación, filtros, servlets, vistas, AJAX y cliente backend. | Alta | A confirmar por el grupo | Pendiente |
+3.8. Estado del Hito 1
 
-## Próximos pasos
+Como cierre de la sesión se realizó una valoración general del progreso alcanzado.
 
-1. Confirmar que todos los cambios de código necesarios están commiteados.
-2. Repartir responsables concretos para las tareas pendientes.
-3. Finalizar y probar la modificación de notas.
-4. Añadir pruebas manuales completas de alumno, profesor y roles.
-5. Añadir logout/cambio de usuario desde puntos clave de navegación si se considera necesario.
-6. Añadir páginas de error personalizadas.
-7. Añadir cabeceras anti-caché para reforzar el cierre de sesión.
-8. Revisar la foto del alumno en expediente mediante backend o placeholder local.
-9. Revisar la documentación antes de la entrevista.
-10. Crear una etiqueta de versión estable cuando el flujo completo esté validado.
+Se considera que el proyecto ya dispone de una base sólida y suficientemente avanzada para afrontar la fase final del Hito 1.
 
-## Observaciones finales
+No obstante, se identifican todavía varias áreas prioritarias:
 
-La sesión permitió consolidar una versión mucho más estable del proyecto y dejar documentados tanto los cambios realizados como las tareas que todavía requieren revisión. El objetivo principal a partir de este punto es evitar cambios descoordinados, completar las pruebas pendientes y mantener una versión funcional común hasta la entrega.
+estabilizar autenticación
+completar consultas REST
+corregir incidencias relacionadas con notas
+finalizar configuración de seguridad
+completar pruebas funcionales
+mantener actualizada la documentación
+
+Se acuerda que todas las tareas futuras deberán orientarse principalmente a consolidar el funcionamiento global del sistema.
+
+4. Acuerdos adoptados
+Continuar verificando el comportamiento de la API REST de CentroEducativo.
+Revisar el tratamiento de las calificaciones obtenidas mediante consultas REST.
+Completar la revisión de los scripts de poblado.
+Priorizar la integración funcional frente al desarrollo de nuevas funcionalidades.
+Mantener la autenticación basada en Tomcat.
+Consolidar el uso de la session key almacenada en sesión HTTP.
+Extremar las precauciones al modificar web.xml.
+Mantener la documentación sincronizada con el estado real del proyecto.
+Continuar realizando pruebas de integración entre componentes.
+5. Próximos pasos
+completar integración REST
+estabilizar autenticación
+revisar recuperación de notas
+verificar poblado de datos
+resolver conflictos de integración
+finalizar configuración de seguridad
+ampliar pruebas funcionales
+continuar documentación técnica
+preparar la integración final previa a la entrega
+6. Validación del acta
+
+El acta ha sido revisada y aceptada por los integrantes participantes en la coordinación.
+
+Nombre	Firma	Fecha
+Vanesa Carolina Castro Bello		
+Mikel Escudero Aramburu		
+Carlos Moldes Peña		
+Pau Oroval González		
+Michal Pojnar		
+Daniel Zanon Barney		
+
+Acta redactada por Vanesa Carolina Castro Bello – Secretaria del Grupo G14
