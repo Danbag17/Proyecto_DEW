@@ -141,3 +141,66 @@ function getNombreAlumno(alumno) {
 
   return completo || alumno.nombreCompleto || alumno.alumno || getDniAlumno(alumno);
 }
+
+/* ---------- Fotografías del alumnado ----------
+   Las fotos son ficheros estáticos en /DEW/fotos/<dni>.png.
+   Si no existe la del DNI, se muestra un avatar genérico (_placeholder.svg).
+*/
+var FOTO_PLACEHOLDER = CTX + 'fotos/_placeholder.svg';
+
+function fotoUrl(dni) {
+  if (!dni) return FOTO_PLACEHOLDER;
+  return CTX + 'fotos/' + encodeURIComponent(dni) + '.png';
+}
+
+/* Devuelve el <img> con fallback al placeholder si la foto no existe. */
+function fotoImg(dni, cssClass) {
+  var url = fotoUrl(dni);
+  return '<img src="' + url + '" alt="Foto" class="' + (cssClass || '') + '"'
+    + ' onerror="this.onerror=null;this.src=\'' + FOTO_PLACEHOLDER + '\';">';
+}
+
+/* ---------- Cálculo de la nota media ----------
+   Acepta notas como "7.8", 7.8 o "" (sin calificar). Ignora las no numéricas.
+*/
+function parseNotaNum(value) {
+  if (value === undefined || value === null) return NaN;
+  var s = String(value).replace(',', '.').trim();
+  if (s === '') return NaN;
+  var n = parseFloat(s);
+  return isNaN(n) ? NaN : n;
+}
+
+function getNotaAlumno(item) {
+  if (item.nota !== undefined && item.nota !== null) return item.nota;
+  if (item.calificacion !== undefined) return item.calificacion;
+  if (item.calificacionNumerica !== undefined) return item.calificacionNumerica;
+  return '';
+}
+
+/* Devuelve { media: Number|null, calificados: n, total: m }. */
+function calcMedia(items) {
+  var suma = 0;
+  var n = 0;
+  for (var i = 0; i < items.length; i++) {
+    var v = parseNotaNum(getNotaAlumno(items[i]));
+    if (!isNaN(v)) {
+      suma += v;
+      n++;
+    }
+  }
+  return {
+    media: n ? (suma / n) : null,
+    calificados: n,
+    total: items.length
+  };
+}
+
+/* Texto formateado de la media, listo para pintar. */
+function textoMedia(items) {
+  var r = calcMedia(items);
+  if (r.media === null) {
+    return 'Sin calificaciones (0 de ' + r.total + ')';
+  }
+  return r.media.toFixed(2) + ' · ' + r.calificados + ' calificados de ' + r.total;
+}

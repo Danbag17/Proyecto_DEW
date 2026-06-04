@@ -3,6 +3,7 @@ package dew.servlets;
 import java.io.IOException;
 
 import dew.client.CentroEducativoClient;
+import dew.util.AsignaturasUtils;
 import dew.util.SessionsUtils;
 
 import jakarta.servlet.ServletException;
@@ -36,7 +37,12 @@ public class AlumnoAsignaturasServlet extends HttpServlet {
         String dni = SessionsUtils.getDni(request);
 
         try {
-            String json = new CentroEducativoClient().getAsignaturasAlumno(dni, key);
+            CentroEducativoClient cliente = new CentroEducativoClient();
+
+            String matriculas = cliente.getAsignaturasAlumno(dni, key);
+            String catalogo = cliente.getAsignaturas(key);
+
+            String json = AsignaturasUtils.enriquecerConCatalogo(matriculas, catalogo);
             writeJson(response, json);
 
         } catch (Exception e) {

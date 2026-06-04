@@ -50,11 +50,12 @@ public class ModificarNotaServlet extends HttpServlet {
         String key = SessionsUtils.getKey(request);
 
         try {
-            String json = new CentroEducativoClient()
+            new CentroEducativoClient()
                     .modificarNota(notaRequest.dniAlumno, notaRequest.asig, notaRequest.nota, key);
 
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(json);
+            response.getWriter().write(
+                    "{\"ok\":true,\"mensaje\":\"Nota modificada correctamente\"}");
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Error modificando nota: " + e.getMessage());

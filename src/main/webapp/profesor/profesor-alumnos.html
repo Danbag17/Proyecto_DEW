@@ -19,24 +19,49 @@
   </nav>
 
   <main class="container py-4">
-    <h1 class="h3">Alumnos de <span id="asigTitle"></span></h1>
-    <p class="text-muted">Modifica la nota y pulsa guardar.</p>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+      <h1 class="h3 nol-page-title mb-0">Alumnado de <span id="asigTitle"></span></h1>
+      <span class="nol-badge" id="mediaBadge">Nota media: —</span>
+    </div>
+    <p class="text-muted">Consulta la ficha de cada alumno y ajusta su calificación. Usa las flechas para navegar.</p>
 
     <div class="alert alert-danger d-none" id="errorBox"></div>
     <div class="alert alert-success d-none" id="okBox">Nota actualizada correctamente.</div>
+    <div class="alert alert-info d-none" id="vacioBox">No hay alumnos matriculados en esta asignatura.</div>
 
-    <div class="table-responsive">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th>DNI</th>
-            <th>Alumno</th>
-            <th>Nota</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="alumnosBody"></tbody>
-      </table>
+    <!-- Ficha de alumno (navegable con flechas) -->
+    <div class="card shadow-sm nol-card-accent d-none" id="fichaCard">
+      <div class="card-body">
+        <div class="row g-4">
+          <div class="col-md-auto text-center">
+            <img id="fichaFoto" class="nol-foto-ficha" alt="Foto del alumno" src="../fotos/_placeholder.svg">
+          </div>
+
+          <div class="col">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <h2 class="h4 mb-0" id="fichaNombre">—</h2>
+              <span class="badge text-bg-secondary" id="fichaDni"></span>
+            </div>
+            <p class="text-muted mb-2" id="fichaMatricula"></p>
+
+            <p class="text-muted small mb-3" id="fichaRelleno"></p>
+
+            <label class="form-label" for="fichaNota">Calificación (0 – 10)</label>
+            <div class="d-flex gap-2" style="max-width: 320px;">
+              <input class="form-control" id="fichaNota" type="number" min="0" max="10" step="0.1">
+              <button class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-outline-secondary" id="btnPrev">&larr; Anterior</button>
+          <span class="text-muted small" id="contador"></span>
+          <button class="btn btn-outline-secondary" id="btnNext">Siguiente &rarr;</button>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -45,50 +70,102 @@
     var acronimo = qs('asig');
     setText('asigTitle', acronimo || '');
 
-    function renderAlumnos(data) {
-      var alumnos = safeArray(data);
-      var body = document.getElementById('alumnosBody');
+    var alumnos = [];
+    var idx = 0;
 
-      if (!alumnos.length) {
-        body.innerHTML = '<tr><td colspan="4" class="text-muted">No hay alumnos en esta asignatura.</td></tr>';
-        return;
-      }
+    // Texto de relleno (estilo "Lorem ipsum") para dar cuerpo a la ficha académica.
+    var RELLENO = 'Estudiante matriculado/a en la asignatura. La información mostrada procede '
+      + 'del nivel de datos (CentroEducativo) y se completa con texto de relleno a modo de ficha '
+      + 'académica. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+      + 'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.';
 
-      var html = '';
-      for (var i = 0; i < alumnos.length; i++) {
-        var a = alumnos[i];
-        var dni = getDniAlumno(a);
-        var nota = a.nota || a.calificacion || a.calificacionNumerica || '';
+    function pintarFicha() {
+      if (!alumnos.length) return;
+      var a = alumnos[idx];
+      var dni = getDniAlumno(a);
 
-        html += '<tr>';
-        html += '<td>' + dni + '</td>';
-        html += '<td>' + getNombreAlumno(a) + '</td>';
-        html += '<td style="max-width: 140px;">';
-        html += '<input class="form-control form-control-sm" id="nota_' + dni + '" value="' + nota + '" type="number" min="0" max="10" step="0.1">';
-        html += '</td>';
-        html += '<td>';
-        html += '<button class="btn btn-sm btn-primary" onclick="guardarNota(\'' + acronimo + '\', \'' + dni + '\')">Guardar</button>';
-        html += '</td>';
-        html += '</tr>';
-      }
+      setText('fichaNombre', getNombreAlumno(a));
+      setText('fichaDni', dni);
+      setText('fichaMatricula', 'Matriculado/a en: ' + (acronimo || '—'));
+      setText('fichaRelleno', RELLENO);
 
-      body.innerHTML = html;
+      var foto = document.getElementById('fichaFoto');
+      foto.onerror = function () { this.onerror = null; this.src = FOTO_PLACEHOLDER; };
+      foto.src = fotoUrl(dni);
+
+      var input = document.getElementById('fichaNota');
+      var nota = getNotaAlumno(a);
+      input.value = (nota === '' || nota === null || nota === undefined) ? '' : nota;
+
+      setText('contador', 'Alumno/a ' + (idx + 1) + ' de ' + alumnos.length);
+      document.getElementById('btnPrev').disabled = (idx === 0);
+      document.getElementById('btnNext').disabled = (idx === alumnos.length - 1);
     }
 
-    function guardarNota(asig, dni) {
+    function actualizarMedia() {
+      setText('mediaBadge', 'Nota media: ' + textoMedia(alumnos));
+    }
+
+    function mover(delta) {
+      var nuevo = idx + delta;
+      if (nuevo < 0 || nuevo >= alumnos.length) return;
+      idx = nuevo;
+      hideError();
+      document.getElementById('okBox').classList.add('d-none');
+      pintarFicha();
+    }
+
+    function guardarNota() {
       hideError();
       var okBox = document.getElementById('okBox');
       okBox.classList.add('d-none');
 
-      var input = document.getElementById('nota_' + dni);
-      var nota = input ? input.value : '';
+      var a = alumnos[idx];
+      var dni = getDniAlumno(a);
+      var input = document.getElementById('fichaNota');
+      var nota = parseFloat(input.value);
 
-      ajax(API.profesorNota(asig, dni), {
+      if (isNaN(nota) || nota < 0 || nota > 10) {
+        showError(new Error('La nota debe ser un número entre 0 y 10.'));
+        return;
+      }
+
+      ajax(API.profesorNota(acronimo, dni), {
         method: 'POST',
-        body: JSON.stringify({ nota: parseFloat(nota) })
-      }).then(function () {
+        body: JSON.stringify({ nota: nota })
+      }).then(function (data) {
+        // Refleja el cambio en memoria para recalcular la media al instante.
+        a.nota = nota;
+        actualizarMedia();
+
+        var mensaje = (data && data.mensaje) ? data.mensaje : 'Nota actualizada correctamente.';
+        okBox.textContent = mensaje;
         okBox.classList.remove('d-none');
       }).catch(showError);
+    }
+
+    function renderAlumnos(data) {
+      alumnos = safeArray(data);
+
+      if (!alumnos.length) {
+        document.getElementById('vacioBox').classList.remove('d-none');
+        return;
+      }
+
+      document.getElementById('fichaCard').classList.remove('d-none');
+      document.getElementById('btnPrev').addEventListener('click', function () { mover(-1); });
+      document.getElementById('btnNext').addEventListener('click', function () { mover(1); });
+      document.getElementById('btnGuardar').addEventListener('click', guardarNota);
+
+      // Navegación también con las flechas del teclado.
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') mover(-1);
+        if (e.key === 'ArrowRight') mover(1);
+      });
+
+      idx = 0;
+      actualizarMedia();
+      pintarFicha();
     }
 
     if (!acronimo) {

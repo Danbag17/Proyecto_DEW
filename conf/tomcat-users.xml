@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  tomcat-users.xml para NOL 25/26
+
+  COLOCAR ESTE ARCHIVO EN:  $CATALINA_HOME/conf/tomcat-users.xml
+  (sustituye al que trae Tomcat por defecto, o fusiona el bloque <tomcat-users>).
+  Si lanzas Tomcat desde Eclipse, el que se usa es el de la carpeta "Servers"
+  del proyecto (Tomcat ... Server at localhost-config / tomcat-users.xml).
+  Tras cambiarlo, REINICIA Tomcat para que recargue el realm.
+
+  - El "username" se teclea en el login (j_username) y coincide con el DNI.
+    Debe coincidir con las claves del map de dew.filters.AuthFilter.
+  - Roles: rolalu = alumnado, rolpro = profesorado.
+  - Contraseña de todos: 123456.
+
+  Incluye DOS conjuntos para que funcione en arranque limpio de CentroEducativo
+  y tras ejecutar el script de población:
+    - DEFECTO: usuarios que trae CentroEducativo al arrancar (enunciado, secc. 6.5).
+    - SCRIPT : usuarios creados por scripts/poblar-centroeducativo-completo.sh.
+-->
+<tomcat-users xmlns="http://tomcat.apache.org/xml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              version="1.0">
+
+  <role rolename="rolalu"/>
+  <role rolename="rolpro"/>
+
+  <!-- ============ PROFESORADO (rolpro) ============ -->
+  <!-- Por defecto (secc. 6.5 del enunciado) -->
+  <user username="23456733H" password="123456" roles="rolpro"/> <!-- Ramón Garcia -->
+  <user username="10293756L" password="123456" roles="rolpro"/> <!-- Pedro Valderas -->
+  <user username="06374291A" password="123456" roles="rolpro"/> <!-- Manoli Albert -->
+  <user username="65748923M" password="123456" roles="rolpro"/> <!-- Joan Fons -->
+  <!-- Creados por el script -->
+  <user username="22222222P" password="123456" roles="rolpro"/> <!-- Ava Williams -->
+  <user username="33333333P" password="123456" roles="rolpro"/> <!-- Luis Navarro -->
+  <user username="44444444R" password="123456" roles="rolpro"/> <!-- Marta Sánchez -->
+  <user username="55555555S" password="123456" roles="rolpro"/> <!-- Carlos Gómez -->
+  <user username="66666666T" password="123456" roles="rolpro"/> <!-- Lucía Fernández -->
+  <user username="77777777W" password="123456" roles="rolpro"/> <!-- David Ramírez -->
+
+  <!-- ============ ALUMNADO (rolalu) ============ -->
+  <!-- Por defecto (secc. 6.5 del enunciado) -->
+  <user username="12345678W" password="123456" roles="rolalu"/> <!-- Pepe Garcia Sanchez -->
+  <user username="23456387R" password="123456" roles="rolalu"/> <!-- Maria Fernandez Gómez -->
+  <user username="34567891F" password="123456" roles="rolalu"/> <!-- Miguel Hernandez Llopis -->
+  <user username="93847525G" password="123456" roles="rolalu"/> <!-- Laura Benitez Torres -->
+  <user username="37264096W" password="123456" roles="rolalu"/> <!-- Minerva Alonso Pérez -->
+  <!-- Creados por el script -->
+  <user username="33445566X" password="123456" roles="rolalu"/> <!-- John Wick -->
+  <user username="12345678A" password="123456" roles="rolalu"/> <!-- Carlos Martínez -->
+  <user username="87654321B" password="123456" roles="rolalu"/> <!-- Eva Ruiz -->
+  <user username="11223344C" password="123456" roles="rolalu"/> <!-- Laura Gómez -->
+  <user username="22334455D" password="123456" roles="rolalu"/> <!-- Pedro Díaz -->
+  <user username="33445567E" password="123456" roles="rolalu"/> <!-- Sara López -->
+  <user username="44556677F" password="123456" roles="rolalu"/> <!-- Hugo Moreno -->
+  <user username="55667788G" password="123456" roles="rolalu"/> <!-- Marta Jiménez -->
+  <user username="66778899H" password="123456" roles="rolalu"/> <!-- Iván Torres -->
+  <user username="77889900J" password="123456" roles="rolalu"/> <!-- Nerea Castro -->
+  <user username="88990011K" password="123456" roles="rolalu"/> <!-- Adrián Vega -->
+  <user username="99001122L" password="123456" roles="rolalu"/> <!-- Paula Ortega -->
+  <user username="10111213M" password="123456" roles="rolalu"/> <!-- Diego Romero -->
+  <user username="12131415N" password="123456" roles="rolalu"/> <!-- Alba Gil -->
+  <user username="14151617P" password="123456" roles="rolalu"/> <!-- Mario Serrano -->
+  <user username="16171819Q" password="123456" roles="rolalu"/> <!-- Claudia Núñez -->
+
+</tomcat-users>
