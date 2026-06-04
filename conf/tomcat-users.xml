@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  tomcat-users.xml para NOL 25/26
 
-  COLOCAR ESTE ARCHIVO EN:  $CATALINA_HOME/conf/tomcat-users.xml
-  (sustituye al que trae Tomcat por defecto, o fusiona el bloque <tomcat-users>).
-  Si lanzas Tomcat desde Eclipse, el que se usa es el de la carpeta "Servers"
-  del proyecto (Tomcat ... Server at localhost-config / tomcat-users.xml).
-  Tras cambiarlo, REINICIA Tomcat para que recargue el realm.
-
-  - El "username" se teclea en el login (j_username) y coincide con el DNI.
-    Debe coincidir con las claves del map de dew.filters.AuthFilter.
-  - Roles: rolalu = alumnado, rolpro = profesorado.
-  - Contraseña de todos: 123456.
-
-  Incluye DOS conjuntos para que funcione en arranque limpio de CentroEducativo
-  y tras ejecutar el script de población:
-    - DEFECTO: usuarios que trae CentroEducativo al arrancar (enunciado, secc. 6.5).
-    - SCRIPT : usuarios creados por scripts/poblar-centroeducativo-completo.sh.
--->
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               version="1.0">
