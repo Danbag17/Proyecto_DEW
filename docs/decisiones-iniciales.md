@@ -182,3 +182,104 @@ Se considera que, tras la creación de la estructura base y la revisión del rep
 - hacer funcional el flujo del alumnado
 - integrar las operaciones mínimas con CentroEducativo
 - completar la documentación y los Javadocs
+
+
+  # Evolución del proyecto tras el Hito 1
+
+## 14. Cambio en el alcance funcional
+
+En el Hito 1 se priorizó exclusivamente el flujo del alumnado.
+
+Tras la validación del Hito 1 se completaron las funcionalidades del profesorado:
+
+- consulta de asignaturas impartidas;
+- consulta de alumnado mediante AJAX;
+- modificación de notas;
+- cálculo de medias;
+- visualización de fichas de alumnado.
+
+---
+
+## 15. Incorporación de AuthFilter
+
+Inicialmente se preveía que el login REST contra CentroEducativo se realizara desde los servlets.
+
+Durante la implementación se detectó que la lógica se repetía en múltiples puntos y se decidió introducir `AuthFilter` como punto único de integración entre Tomcat y CentroEducativo.
+
+Ventajas obtenidas:
+
+- reducción de código duplicado;
+- centralización de la obtención de la key;
+- simplificación de los servlets.
+
+---
+
+## 16. Evolución de SessionsUtils
+
+En el diseño inicial SessionsUtils se planteó como utilidad para almacenar:
+
+- dni;
+- password;
+- key.
+
+Durante el desarrollo pasó a convertirse en el mecanismo principal de acceso a la sesión de usuario, centralizando la validación y recuperación de atributos de sesión.
+
+---
+
+## 17. Evolución del frontend
+
+Durante el Hito 1 únicamente se contemplaba la navegación básica del alumnado.
+
+En la versión final se incorporaron:
+
+- Bootstrap 5 completo;
+- CSS personalizado;
+- vistas del profesorado;
+- páginas de error;
+- estilos de impresión;
+- integración de fotografías.
+
+---
+
+## 18. Evolución de la integración REST
+
+Las operaciones previstas inicialmente para fases posteriores fueron finalmente implementadas:
+
+- asignaturas de profesor;
+- alumnos por asignatura;
+- modificación de notas;
+- generación de expediente completo.
+
+Toda la comunicación quedó centralizada en `CentroEducativoClient`.
+
+---
+
+## 19. Gestión de fotografías
+
+La versión inicial no contemplaba la integración definitiva de fotografías.
+
+En la versión final se adoptó el criterio:
+
+```text
+fotos/<DNI>.png
+
+permitiendo asociar automáticamente cada fotografía con el alumno correspondiente.
+
+20. Problemas encontrados y decisiones posteriores
+
+Durante la implementación aparecieron problemas no previstos inicialmente:
+
+sincronización entre Tomcat y CentroEducativo;
+configuración de rutas relativas;
+persistencia de sesión tras logout;
+control de caché;
+carga dinámica mediante AJAX;
+despliegue en diferentes entornos.
+
+Las soluciones adoptadas quedaron incorporadas a la arquitectura final del proyecto.
+
+21. Situación final
+
+Las decisiones tomadas durante el Hito 1 se consideran válidas y sirvieron como base del proyecto.
+
+No obstante, la implementación final obligó a ampliar algunas de ellas para incorporar autenticación completa, AJAX, gestión de fotografías, control de caché, páginas de error e integración completa con CentroEducativo.
