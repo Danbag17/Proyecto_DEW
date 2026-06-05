@@ -68,10 +68,6 @@ public class LogsFilter implements Filter {
 
         String ip = request.getRemoteAddr();
 
-        /*
-         * El enunciado pide que aparezca el servlet/recurso activado.
-         * Usamos servletPath para que salga /AlumnoAsignaturasServlet en vez de toda la URI.
-         */
         String recurso = request.getServletPath();
         if (recurso == null || recurso.isBlank()) {
             recurso = request.getRequestURI();

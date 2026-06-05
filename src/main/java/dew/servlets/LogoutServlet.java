@@ -23,9 +23,8 @@ public class LogoutServlet extends HttpServlet {
         } catch (ServletException ignored) {
         }
 
-        // Invalida la HttpSession (borra dni/key/... propios) y limpia el cookie
-        // jar del cliente REST para que no se arrastre sesión de CentroEducativo
-        // entre logins.
+        // Invalida la HttpSession y limpia el cookie jar del cliente REST para que 
+        // no se arrastre sesión de CentroEducativo entre logins.
         SessionsUtils.invalidateSession(request);
         CentroEducativoClient.clearCookieJar();
 

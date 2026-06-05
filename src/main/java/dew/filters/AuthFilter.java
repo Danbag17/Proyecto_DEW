@@ -24,10 +24,8 @@ public class AuthFilter implements Filter {
     private static final Map<String, Credentials> USERS = new HashMap<>();
 
     static {
-        /*
-         * Ajustad estos login_tomcat a lo que pongáis en tomcat-users.xml/conf.
-         * Los DNI/password son los de CentroEducativo.
-         */
+    
+         
     	// ===== Profesorado (rolpro) =====
     	// --- Por defecto ---
     	USERS.put("23456733H", new Credentials("23456733H", "123456")); // Ramón Garcia
@@ -82,7 +80,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         
-        //Impedir que Firefox cachee las páginas protegidas
+        //Impedir que navegador cachee las páginas protegidas
         res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         res.setHeader("Pragma", "no-cache");
         res.setDateHeader("Expires", 0);
