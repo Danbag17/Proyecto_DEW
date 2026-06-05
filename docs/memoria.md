@@ -193,3 +193,342 @@ El grupo considera que, tras las sesiones iniciales de organización y puesta en
 
 
 La prioridad a partir de este punto debe centrarse en la implementación funcional, las pruebas de integración y la consolidación de la documentación técnica del trabajo realizado.
+
+---
+
+# 13. Evolución tras el Hito 1
+
+## 13.1 Objetivo de la segunda fase
+
+Tras la validación del Hito 1, el objetivo principal pasó de disponer de una estructura funcional mínima a completar la totalidad de requisitos exigidos por el enunciado del proyecto.
+
+Las prioridades establecidas fueron:
+
+* completar el flujo del profesorado;
+* consolidar la integración REST;
+* implementar AJAX;
+* reforzar la autenticación y gestión de sesiones;
+* incorporar fotografías del alumnado;
+* mejorar la experiencia visual;
+* finalizar la documentación técnica.
+
+---
+
+## 13.2 Evolución de la arquitectura
+
+La arquitectura prevista durante el Hito 1 se mantuvo, aunque se reforzó la separación entre capas.
+
+Arquitectura final:
+
+```text
+Navegador
+    ↓
+HTML + CSS + JavaScript
+    ↓
+AJAX (fetch)
+    ↓
+Servlets
+    ↓
+CentroEducativoClient
+    ↓
+CentroEducativo REST
+```
+
+Esta separación permitió mantener desacopladas:
+
+* presentación;
+* lógica web;
+* acceso a datos.
+
+---
+
+## 13.3 Integración completa con CentroEducativo
+
+Durante el Hito 1 únicamente se habían priorizado operaciones de consulta para alumnado.
+
+La versión final incorpora:
+
+### Alumnado
+
+* consulta de asignaturas;
+* consulta de detalle;
+* consulta de expediente.
+
+### Profesorado
+
+* consulta de asignaturas impartidas;
+* consulta de alumnado matriculado;
+* modificación de notas.
+
+Toda la comunicación quedó centralizada en:
+
+```text
+dew.client.CentroEducativoClient
+```
+
+---
+
+## 13.4 Sistema de autenticación definitivo
+
+La autenticación final se apoya en dos mecanismos complementarios.
+
+### Tomcat
+
+Responsable de:
+
+* validar credenciales;
+* gestionar roles;
+* proteger recursos.
+
+### CentroEducativo
+
+Responsable de:
+
+* autenticar contra el sistema académico;
+* generar la session key.
+
+Para coordinar ambos sistemas se incorporó:
+
+```text
+dew.filters.AuthFilter
+```
+
+que realiza automáticamente la autenticación REST y crea la sesión interna de NOL.
+
+---
+
+## 13.5 Gestión de sesiones
+
+La gestión de sesiones evolucionó significativamente respecto al diseño inicial.
+
+La clase:
+
+```text
+dew.util.SessionsUtils
+```
+
+se convirtió en el punto único de acceso a:
+
+* dni;
+* password;
+* key;
+* rol.
+
+Esto permitió reducir duplicación de código y facilitar el mantenimiento.
+
+---
+
+## 13.6 Desarrollo del flujo del profesorado
+
+La funcionalidad de profesorado quedó completamente implementada.
+
+Capacidades finales:
+
+* consultar asignaturas impartidas;
+* consultar alumnos matriculados;
+* visualizar fichas académicas;
+* modificar calificaciones;
+* consultar información ampliada del alumnado.
+
+La modificación de notas se realiza mediante AJAX sin necesidad de recargar páginas completas.
+
+---
+
+## 13.7 Incorporación de AJAX
+
+Una de las principales mejoras respecto al Hito 1 fue la incorporación sistemática de AJAX.
+
+La filosofía adoptada fue:
+
+```text
+Vista HTML
+     ↓
+JavaScript
+     ↓
+Fetch
+     ↓
+Servlet
+     ↓
+JSON
+```
+
+Ventajas obtenidas:
+
+* menor número de recargas;
+* mayor fluidez;
+* mejor separación entre frontend y backend.
+
+---
+
+## 13.8 Evolución del frontend
+
+La interfaz pasó de una estructura básica a una aplicación visualmente completa.
+
+Tecnologías utilizadas:
+
+* Bootstrap 5;
+* CSS personalizado;
+* JavaScript;
+* AJAX.
+
+Se añadieron:
+
+* navegación por roles;
+* tarjetas;
+* tablas dinámicas;
+* estilos de impresión;
+* páginas de error;
+* integración de fotografías.
+
+---
+
+## 13.9 Fotografías del alumnado
+
+La versión final incorpora fotografías asociadas a cada alumno.
+
+Se adoptó el criterio:
+
+```text
+fotos/<DNI>.png
+```
+
+Ejemplo:
+
+```text
+fotos/12345678A.png
+```
+
+La fotografía se carga automáticamente utilizando el DNI recibido desde CentroEducativo.
+
+Esta solución evita almacenar imágenes en JSON o realizar peticiones adicionales al backend.
+
+---
+
+## 13.10 Expediente académico y certificado
+
+La funcionalidad de expediente evolucionó hasta convertirse en una de las vistas más completas del proyecto.
+
+Incluye:
+
+* datos personales;
+* asignaturas;
+* notas;
+* créditos;
+* fotografía;
+* nota media;
+* formato de impresión.
+
+Para obtener toda la información fue necesario combinar datos procedentes de varias consultas REST.
+
+---
+
+## 13.11 Sistema de logs
+
+El filtro:
+
+```text
+dew.filters.LogsFilter
+```
+
+permite registrar:
+
+* fecha;
+* usuario;
+* IP;
+* recurso solicitado;
+* método HTTP.
+
+La configuración continúa realizándose mediante parámetros definidos en:
+
+```text
+WEB-INF/web.xml
+```
+
+---
+
+## 13.12 Seguridad y control de acceso
+
+La seguridad definitiva combina:
+
+### Seguridad declarativa
+
+Configurada mediante:
+
+```xml
+<security-constraint>
+```
+
+y
+
+```xml
+<security-role>
+```
+
+### Seguridad programática
+
+Aplicada mediante:
+
+* AuthFilter;
+* SessionsUtils;
+* validaciones en servlets.
+
+Esta combinación protege tanto páginas como endpoints AJAX.
+
+---
+
+## 13.13 Problemas encontrados
+
+Durante el desarrollo se resolvieron incidencias relacionadas con:
+
+* autenticación Tomcat;
+* integración REST;
+* configuración de Tomcat;
+* despliegue en distintos entornos;
+* rutas relativas;
+* sesiones;
+* logout;
+* caché del navegador;
+* carga dinámica mediante AJAX.
+
+La resolución de estos problemas permitió estabilizar la aplicación y mejorar la experiencia de usuario.
+
+---
+
+## 13.14 Estado final del proyecto
+
+La aplicación desarrollada cumple los requisitos principales definidos en el enunciado:
+
+### Alumno
+
+* autenticación;
+* consulta de asignaturas;
+* consulta de detalle;
+* consulta de expediente;
+* certificado imprimible;
+* visualización de fotografía.
+
+### Profesor
+
+* autenticación;
+* consulta de asignaturas;
+* consulta de alumnado;
+* modificación de notas;
+* visualización de fichas.
+
+### Infraestructura
+
+* autenticación FORM;
+* control de roles;
+* integración REST;
+* gestión de sesiones;
+* logs;
+* AJAX;
+* Bootstrap;
+* documentación técnica.
+
+---
+
+## 13.15 Conclusión final
+
+Tras la finalización de la segunda fase, el proyecto evolucionó desde una base funcional centrada en alumnado hasta una aplicación web completa que integra autenticación, roles, sesiones, comunicación REST, AJAX, gestión académica, fotografías y documentación técnica. La arquitectura adoptada permitió mantener una separación clara entre interfaz, lógica de aplicación y acceso a datos, facilitando tanto el desarrollo como el mantenimiento del sistema.
+

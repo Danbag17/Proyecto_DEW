@@ -21,11 +21,8 @@ import java.util.Map;
 public class CentroEducativoClient {
 
     private static final String BASE_URL =
-    		
-            "http://172.23.189.79:9090/CentroEducativo";
-
-
-    private static final MediaType JSON =
+    		"http://localhost:9090/CentroEducativo";
+ static final MediaType JSON =
             MediaType.parse("application/json; charset=utf-8");
 
     private static final Map<String, List<Cookie>> cookieStore =
@@ -105,7 +102,7 @@ public class CentroEducativoClient {
         if (key == null || key.isBlank()) {
             return false;
         }
-
+        
         Request request = new Request.Builder()
                 .url(BASE_URL + "/asignaturas?key=" + enc(key))
                 .get()
