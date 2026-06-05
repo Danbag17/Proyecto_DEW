@@ -22,7 +22,7 @@ public class CentroEducativoClient {
 
     private static final String BASE_URL =
     		
-            "http://127.0.0.1:9090/CentroEducativo";
+            "http://172.23.189.79:9090/CentroEducativo";
 
 
     private static final MediaType JSON =
@@ -98,6 +98,24 @@ public class CentroEducativoClient {
             }
 
             return responseBody;
+        }
+    }
+    
+    public boolean isKeyValid(String key) {
+        if (key == null || key.isBlank()) {
+            return false;
+        }
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/asignaturas?key=" + enc(key))
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.isSuccessful();
+        } catch (IOException e) {
+            return false;
         }
     }
 

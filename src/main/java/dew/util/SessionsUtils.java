@@ -35,6 +35,7 @@ public final class SessionsUtils {
         HttpSession session = getSession(request);
         return session != null
                 && session.getAttribute(ATTR_DNI) != null
+                && session.getAttribute(ATTR_PASSWORD) != null
                 && session.getAttribute(ATTR_KEY) != null;
     }
 
