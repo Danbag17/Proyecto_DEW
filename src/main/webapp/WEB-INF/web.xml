@@ -5,7 +5,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   <display-name>DEW</display-name>
 
     <welcome-file-list>
-        <welcome-file>index-v2.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <context-param>
@@ -211,8 +211,8 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
         <auth-method>FORM</auth-method>
         <realm-name>Notas OnLine</realm-name>
         <form-login-config>
-            <form-login-page>/login-v2.html</form-login-page>
-            <form-error-page>/login-error-v2.html</form-error-page>
+            <form-login-page>/login.html</form-login-page>
+            <form-error-page>/login-error.html</form-error-page>
         </form-login-config>
     </login-config>
     

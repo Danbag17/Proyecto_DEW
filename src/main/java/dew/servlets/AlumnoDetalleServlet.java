@@ -99,9 +99,10 @@ public class AlumnoDetalleServlet extends HttpServlet {
             response.getWriter().write(resultado.toString());
 
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error obteniendo detalle de asignatura: " + e.getMessage()
+                    "Error interno del servidor"
             );
         }
     }

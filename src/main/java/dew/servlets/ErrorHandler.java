@@ -51,7 +51,7 @@ public class ErrorHandler extends HttpServlet {
         		  <title>%d - %s</title>
         		  <meta name="viewport" content="width=device-width, initial-scale=1">
         		  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        		  <link rel="stylesheet" href="/DEW/css/nol-v2.css">
+        		  <link rel="stylesheet" href="/DEW/css/nol.css">
         		</head>
         		<body class="bg-light">
         		  <main class="container py-5">
@@ -64,7 +64,7 @@ public class ErrorHandler extends HttpServlet {
         		        <p class="text-muted mb-4">%s</p>
 
         		        <div class="d-grid gap-3 mx-auto" style="max-width: 360px;">
-        		          <a href="/DEW/index-v2.html" class="btn btn-primary w-100">
+        		          <a href="/DEW/index.html" class="btn btn-primary w-100">
         		            Ir al inicio
         		          </a>
 

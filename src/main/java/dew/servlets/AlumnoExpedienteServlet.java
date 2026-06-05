@@ -50,9 +50,10 @@ public class AlumnoExpedienteServlet extends HttpServlet {
             writeJson(response, resultadoFinal);
 
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error al generar el expediente: " + e.getMessage()
+                    "Error interno del servidor"
             );
         }
     }

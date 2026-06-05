@@ -7,12 +7,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/nol.css">
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="alumno-asignaturas.html">NOL Alumno</a>
+      <a class="navbar-brand" href="alumno-asignaturas.html">NOL · Alumnado<small>Notas Online · Portal académico</small></a>
       <div class="ms-auto">
         <a class="btn btn-outline-light btn-sm me-2" href="alumno-asignaturas.html">Asignaturas</a>
+        <a class="btn btn-outline-light btn-sm me-2" href="alumno-expediente.html">Expediente</a>
         <button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
       </div>
     </div>
@@ -21,39 +22,101 @@
   <main class="container py-4">
     <div class="alert alert-danger d-none" id="errorBox"></div>
 
-    <div class="card shadow-sm">
+    <!-- Cabecera de la asignatura -->
+    <div class="card nol-card-accent mb-4">
       <div class="card-body">
-        <h1 class="h3" id="titulo">Detalle de asignatura</h1>
-        <p class="text-muted" id="subtitulo"></p>
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+          <div>
+            <h1 class="h3 nol-page-title mb-1" id="titulo">Detalle de asignatura</h1>
+            <p class="text-muted mb-0" id="subtitulo">
+  				Consulta la información académica de la asignatura y el estado actual de tu calificación.
+			</p>
+          </div>
+          <span class="nol-pill nol-pill--neutral" id="estadoPub">Sin publicar</span>
+        </div>
 
-        <dl class="row mt-4">
-          <dt class="col-sm-3">Acrónimo</dt>
-          <dd class="col-sm-9" id="acr"></dd>
-
-          <dt class="col-sm-3">Nombre</dt>
-          <dd class="col-sm-9" id="nombre"></dd>
-
-          <dt class="col-sm-3">Curso</dt>
-          <dd class="col-sm-9" id="curso"></dd>
-
-          <dt class="col-sm-3">Cuatrimestre</dt>
-          <dd class="col-sm-9" id="cuatrimestre"></dd>
-
-          <dt class="col-sm-3">Créditos</dt>
-          <dd class="col-sm-9" id="creditos"></dd>
-
-          <dt class="col-sm-3">Nota</dt>
-          <dd class="col-sm-9 fw-bold" id="nota"></dd>
-        </dl>
-
-        <hr>
-        <h2 class="h6">Sobre la asignatura</h2>
-        <p class="text-muted small mb-0">
-          Información académica de la asignatura dentro del plan de estudios. El contenido se
-          completa con texto de relleno a modo de ficha. Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        <div class="nol-detalle-grid mt-4">
+          <div class="nol-info">
+            <div class="nol-info-item"><div class="nol-info-k">Acrónimo</div><div class="nol-info-v" id="acr">—</div></div>
+            <div class="nol-info-item"><div class="nol-info-k">Nombre</div><div class="nol-info-v" id="nombre">—</div></div>
+            <div class="nol-info-item"><div class="nol-info-k">Curso</div><div class="nol-info-v" id="curso">—</div></div>
+            <div class="nol-info-item"><div class="nol-info-k">Cuatrimestre</div><div class="nol-info-v" id="cuatrimestre">—</div></div>
+            <div class="nol-info-item"><div class="nol-info-k">Créditos (ECTS)</div><div class="nol-info-v" id="creditos">—</div></div>
+          </div>
+          <aside class="nol-nota-box">
+            <div class="nol-nota-label">Tu nota</div>
+            <div class="nol-nota-value" id="nota">—</div>
+            <div class="nol-nota-sub">Convocatoria ordinaria</div>
+          </aside>
+        </div>
       </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Ficha académica -->
+      <div class="col-lg-7">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="h5 nol-section-title mb-3"><span class="nol-mark"></span>Ficha académica</h2>
+            <div class="nol-info">
+              <div class="nol-info-item"><div class="nol-info-k">Profesor/a responsable</div><div class="nol-info-v">Profesorado de la asignatura</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Departamento</div><div class="nol-info-v">Sistemas Informáticos y Computación</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Convocatoria</div><div class="nol-info-v">Ordinaria · 2025/2026</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Estado de publicación</div><div class="nol-info-v" id="estadoPub2">—</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Idioma de impartición</div><div class="nol-info-v">Castellano</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Modalidad</div><div class="nol-info-v">Presencial</div></div>
+            </div>
+
+            <h3 class="h6 mt-4 mb-2">Observaciones</h3>
+      <h3 class="h6 mt-4 mb-2">Observaciones</h3>
+	  <p class="text-muted small mb-0">
+  		Esta ficha resume la información disponible de la asignatura y muestra el estado actual
+  		de la calificación asociada a tu matrícula. Si la nota aparece como pendiente, todavía no
+  		ha sido publicada en CentroEducativo. Si ya aparece una calificación, esta puede estar
+  		sujeta al periodo de revisión establecido por el profesorado.
+	  </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluación + fechas -->
+      <div class="col-lg-5">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="h5 nol-section-title mb-3"><span class="nol-mark"></span>Sistema de evaluación</h2>
+            <div class="nol-eval">
+              <div class="nol-eval-row">
+                <span class="nol-eval-name">Prácticas de laboratorio</span><span class="nol-eval-pct">40%</span>
+                <div class="nol-eval-track"><div class="nol-eval-fill" style="width:40%"></div></div>
+              </div>
+              <div class="nol-eval-row">
+                <span class="nol-eval-name">Trabajo final</span><span class="nol-eval-pct">30%</span>
+                <div class="nol-eval-track"><div class="nol-eval-fill" style="width:30%"></div></div>
+              </div>
+              <div class="nol-eval-row">
+                <span class="nol-eval-name">Prueba escrita</span><span class="nol-eval-pct">30%</span>
+                <div class="nol-eval-track"><div class="nol-eval-fill" style="width:30%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h5 nol-section-title mb-3"><span class="nol-mark"></span>Fechas importantes</h2>
+            <div class="nol-info" style="grid-template-columns:1fr;">
+              <div class="nol-info-item"><div class="nol-info-k">Publicación provisional</div><div class="nol-info-v">02/06/2026</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Revisión</div><div class="nol-info-v">04/06/2026 – 09/06/2026</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Cierre de actas</div><div class="nol-info-v">12/06/2026</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nol-note mt-4">
+      Esta información tiene carácter orientativo y puede estar sujeta a revisión durante el periodo
+      establecido por el profesorado.
     </div>
   </main>
 
@@ -61,23 +124,38 @@
   <script>
     var acronimo = qs('asig');
 
+    function pintarEstado(nota) {
+      var publicado = !isNaN(parseNotaNum(nota));
+      var pill = document.getElementById('estadoPub');
+      pill.textContent = publicado ? 'Calificación publicada' : 'Pendiente de publicación';
+      pill.className = 'nol-pill ' + (publicado ? 'nol-pill--ok' : 'nol-pill--wait');
+      setText('estadoPub2', publicado ? 'Publicada' : 'Pendiente');
+    }
+
     if (!acronimo) {
       showError(new Error('Falta el parámetro asig en la URL.'));
     } else {
-    	ajax(API.alumnoDetalle(acronimo))
-    	  .then(function (data) {
+      ajax(API.alumnoDetalle(acronimo))
+        .then(function (data) {
 
-    	    var m = data.matricula || {};
-    	    var a = data.asignatura || {};
+          var m = data.matricula || {};
+          var a = data.asignatura || {};
 
-    	    setText('acr', a.acronimo || m.asignatura || '');
-    	    setText('nombre', a.nombre || '');
-    	    setText('curso', a.curso || '');
-    	    setText('cuatrimestre', a.cuatrimestre || '');
-    	    setText('creditos', a.creditos || '');
-    	    setText('nota', formatNota(m.nota));
-    	  })
-    	  .catch(showError);
+          var acr = a.acronimo || m.asignatura || '';
+          setText('acr', acr);
+          setText('nombre', a.nombre || '');
+          setText('curso', a.curso || '');
+          setText('cuatrimestre', a.cuatrimestre || '');
+          setText('creditos', a.creditos || '');
+          setText('nota', formatNota(m.nota));
+
+          if (a.nombre || acr) {
+            setText('titulo', (acr ? acr + ' · ' : '') + (a.nombre || ''));
+          }
+          setText('subtitulo', 'Información académica de la asignatura y estado actual de la calificación.');
+          pintarEstado(m.nota);
+        })
+        .catch(showError);
     }
   </script>
 </body>

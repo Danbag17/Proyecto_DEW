@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -7,46 +8,93 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/nol.css">
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-			<div class="container">
-				<a class="navbar-brand" href="profesor-asignaturas.html">NOL 25/26</a>
-				<div class="ms-auto">
-					<button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
-				</div>
-			</div>
-		</nav>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="profesor-asignaturas.html">NOL · Profesorado<small>Notas Online · Portal académico</small></a>
+      <div class="ms-auto">
+        <button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
+      </div>
+    </div>
+  </nav>
+
   <main class="container py-4">
-    <h1 class="h3 nol-page-title">Mis asignaturas</h1>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-1">
+      <h1 class="h3 nol-page-title mb-0">Mis asignaturas</h1>
+      <span class="nol-chip">Curso&nbsp;<b>2025/2026</b></span>
+    </div>
+
     <p class="text-muted">
-      Estas son las asignaturas que impartes este curso. En cada tarjeta verás la
-      <strong>nota media</strong> del alumnado matriculado. Pulsa «Ver alumnado» para
-      consultar las fichas individuales y modificar calificaciones.
+      Panel de seguimiento de las asignaturas asociadas a tu perfil docente. Desde aquí puedes
+      revisar el estado general de cada grupo, comprobar cuántas calificaciones quedan pendientes
+      y acceder al alumnado matriculado para consultar o actualizar sus notas.
     </p>
+
+    <!-- Resumen superior (se completa al cargar las medias) -->
+    <div class="nol-stats mb-4">
+      <div class="nol-stat">
+        <div class="nol-stat-label">Sesión</div>
+        <div class="nol-stat-value" style="font-size:1.15rem;">Profesorado</div>
+        <div class="nol-stat-sub">Acceso autenticado</div>
+      </div>
+      <div class="nol-stat">
+        <div class="nol-stat-label">Asignaturas</div>
+        <div class="nol-stat-value" id="stAsigns">—</div>
+        <div class="nol-stat-sub">impartidas</div>
+      </div>
+      <div class="nol-stat">
+        <div class="nol-stat-label">Alumnado</div>
+        <div class="nol-stat-value" id="stAlumnos">—</div>
+        <div class="nol-stat-sub">matriculado (total)</div>
+      </div>
+      <div class="nol-stat">
+        <div class="nol-stat-label">Pendientes</div>
+        <div class="nol-stat-value" id="stPendientes">—</div>
+        <div class="nol-stat-sub">calificaciones por poner</div>
+      </div>
+    </div>
 
     <div class="alert alert-danger d-none" id="errorBox"></div>
     <div class="row g-3" id="asignaturasBox"></div>
   </main>
 
-  	<script src="../js/api.js"></script>
+  <script src="../js/api.js"></script>
   <script>
+    var totAlumnos = 0;
+    var totPendientes = 0;
+
     function detalleAsignatura(a) {
       var partes = [];
       if (a.curso) partes.push('Curso ' + a.curso);
-      if (a.cuatrimestre) partes.push('Cuatrimestre ' + a.cuatrimestre);
-      if (a.creditos) partes.push(a.creditos + ' créditos');
+      if (a.cuatrimestre) partes.push('Cuatr. ' + a.cuatrimestre);
+      if (a.creditos) partes.push(a.creditos + ' ECTS');
       return partes.join(' · ');
     }
 
-    // Carga asíncrona de la media de una asignatura concreta y la pinta en su tarjeta.
-    function cargarMedia(acr) {
+    // Carga el alumnado de una asignatura y rellena media + contadores de su panel.
+    function cargarDatos(acr) {
       ajax(API.profesorAlumnos(acr)).then(function (data) {
         var alumnos = safeArray(data);
-        var span = document.getElementById('media_' + acr);
-        if (span) span.textContent = 'Nota media: ' + textoMedia(alumnos);
+        var r = calcMedia(alumnos);
+        var pendientes = r.total - r.calificados;
+
+        var setSpan = function (id, val) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = val;
+        };
+
+        setSpan('media_' + acr, 'Nota media: ' + textoMedia(alumnos));
+        setSpan('mat_' + acr, r.total);
+        setSpan('cal_' + acr, r.calificados);
+        setSpan('pen_' + acr, pendientes);
+
+        totAlumnos += r.total;
+        totPendientes += pendientes;
+        setText('stAlumnos', totAlumnos);
+        setText('stPendientes', totPendientes);
       }).catch(function () {
-        var span = document.getElementById('media_' + acr);
-        if (span) span.textContent = 'Nota media: n/d';
+        var el = document.getElementById('media_' + acr);
+        if (el) el.textContent = 'Nota media: n/d';
       });
     }
 
@@ -59,21 +107,33 @@
         return;
       }
 
+      setText('stAsigns', asignaturas.length);
+
       var html = '';
       var acrs = [];
+
       for (var i = 0; i < asignaturas.length; i++) {
         var a = asignaturas[i];
         var acr = getAcronimo(a);
         acrs.push(acr);
 
-        html += '<div class="col-md-4">';
-        html += '  <div class="card h-100 shadow-sm nol-card-accent">';
+        html += '<div class="col-md-6 col-lg-4">';
+        html += '  <div class="card h-100 nol-card-accent">';
         html += '    <div class="card-body d-flex flex-column">';
         html += '      <div class="d-flex justify-content-between align-items-start">';
         html += '        <h2 class="h5 mb-1">' + acr + '</h2>';
+        html += '        <span class="nol-pill nol-pill--neutral">Panel docente</span>';
         html += '      </div>';
-        html += '      <p class="mb-1 fw-semibold">' + getNombreAsignatura(a) + '</p>';
+
+        html += '      <p class="fw-semibold mb-1">' + getNombreAsignatura(a) + '</p>';
         html += '      <p class="text-muted small mb-2">' + detalleAsignatura(a) + '</p>';
+
+        html += '      <div class="nol-stats mb-3" style="grid-template-columns:repeat(3,1fr);gap:0.5rem;">';
+        html += '        <div class="nol-stat" style="padding:0.55rem 0.6rem;"><div class="nol-stat-label">Matr.</div><div class="nol-stat-value" style="font-size:1.15rem;" id="mat_' + acr + '">…</div></div>';
+        html += '        <div class="nol-stat" style="padding:0.55rem 0.6rem;"><div class="nol-stat-label">Calif.</div><div class="nol-stat-value" style="font-size:1.15rem;" id="cal_' + acr + '">…</div></div>';
+        html += '        <div class="nol-stat" style="padding:0.55rem 0.6rem;"><div class="nol-stat-label">Pend.</div><div class="nol-stat-value" style="font-size:1.15rem;" id="pen_' + acr + '">…</div></div>';
+        html += '      </div>';
+
         html += '      <span class="nol-badge mb-3" id="media_' + acr + '">Nota media: …</span>';
         html += '      <a class="btn btn-success btn-sm mt-auto" href="profesor-alumnos.html?asig=' + encodeURIComponent(acr) + '">Ver alumnado</a>';
         html += '    </div>';
@@ -83,14 +143,12 @@
 
       box.innerHTML = html;
 
-      // Una vez pintadas las tarjetas, pedimos la media de cada una.
       for (var j = 0; j < acrs.length; j++) {
-        cargarMedia(acrs[j]);
+        cargarDatos(acrs[j]);
       }
     }
 
     ajax(API.profesorAsignaturas).then(renderAsignaturas).catch(showError);
   </script>
-  	
 </body>
 </html>

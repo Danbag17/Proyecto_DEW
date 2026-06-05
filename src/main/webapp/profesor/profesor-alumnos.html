@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Alumnos asignatura · NOL 25/26</title>
+  <title>Alumnado asignatura · NOL 25/26</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/nol.css">
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="profesor-asignaturas.html">NOL Profesor</a>
+      <a class="navbar-brand" href="profesor-asignaturas.html">NOL · Profesorado<small>Notas Online · Portal académico</small></a>
       <div class="ms-auto">
         <a class="btn btn-outline-light btn-sm me-2" href="profesor-asignaturas.html">Asignaturas</a>
         <button class="btn btn-outline-warning btn-sm" onclick="logout()">Salir</button>
@@ -19,18 +19,29 @@
   </nav>
 
   <main class="container py-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
-      <h1 class="h3 nol-page-title mb-0">Alumnado de <span id="asigTitle"></span></h1>
-      <span class="nol-badge" id="mediaBadge">Nota media: —</span>
+    <!-- Banda superior: resumen de la asignatura -->
+    <div class="card nol-card-accent mb-4">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <h1 class="h3 nol-page-title mb-0">Alumnado de <span id="asigTitle"></span></h1>
+          <span class="nol-badge" id="mediaBadge">Nota media: —</span>
+        </div>
+        <div class="nol-stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));">
+          <div class="nol-stat"><div class="nol-stat-label">Matriculados</div><div class="nol-stat-value" id="resMat">—</div></div>
+          <div class="nol-stat"><div class="nol-stat-label">Calificados</div><div class="nol-stat-value" id="resCal">—</div></div>
+          <div class="nol-stat"><div class="nol-stat-label">Pendientes</div><div class="nol-stat-value" id="resPen">—</div></div>
+        </div>
+      </div>
     </div>
-    <p class="text-muted">Consulta la ficha de cada alumno y ajusta su calificación. Usa las flechas para navegar.</p>
+
+    <p class="text-muted">Consulta la ficha de cada alumno/a y ajusta su calificación. Usa las flechas (o las teclas ← →) para navegar.</p>
 
     <div class="alert alert-danger d-none" id="errorBox"></div>
     <div class="alert alert-success d-none" id="okBox">Nota actualizada correctamente.</div>
     <div class="alert alert-info d-none" id="vacioBox">No hay alumnos matriculados en esta asignatura.</div>
 
     <!-- Ficha de alumno (navegable con flechas) -->
-    <div class="card shadow-sm nol-card-accent d-none" id="fichaCard">
+    <div class="card nol-card-accent d-none" id="fichaCard">
       <div class="card-body">
         <div class="row g-4">
           <div class="col-md-auto text-center">
@@ -41,8 +52,14 @@
             <div class="d-flex flex-wrap align-items-center gap-2">
               <h2 class="h4 mb-0" id="fichaNombre">—</h2>
               <span class="badge text-bg-secondary" id="fichaDni"></span>
+              <span class="nol-pill nol-pill--neutral" id="fichaEstado">—</span>
             </div>
             <p class="text-muted mb-2" id="fichaMatricula"></p>
+
+            <div class="nol-info mb-3" style="grid-template-columns:1fr 1fr;">
+              <div class="nol-info-item"><div class="nol-info-k">Convocatoria</div><div class="nol-info-v">Ordinaria · 2025/2026</div></div>
+              <div class="nol-info-item"><div class="nol-info-k">Última modificación</div><div class="nol-info-v" id="fichaUltMod">—</div></div>
+            </div>
 
             <p class="text-muted small mb-3" id="fichaRelleno"></p>
 
@@ -51,6 +68,7 @@
               <input class="form-control" id="fichaNota" type="number" min="0" max="10" step="0.1">
               <button class="btn btn-primary" id="btnGuardar">Guardar</button>
             </div>
+            <p class="text-muted small mt-2 mb-0">Los cambios se guardan en CentroEducativo al pulsar «Guardar».</p>
           </div>
         </div>
 
@@ -73,27 +91,43 @@
     var alumnos = [];
     var idx = 0;
 
-    // Texto de relleno (estilo "Lorem ipsum") para dar cuerpo a la ficha académica.
-    var RELLENO = 'Estudiante matriculado/a en la asignatura. La información mostrada procede '
-      + 'del nivel de datos (CentroEducativo) y se completa con texto de relleno a modo de ficha '
-      + 'académica.';
+ // Texto de apoyo para contextualizar la ficha académica del alumno/a.
+    var RELLENO = 'Ficha individual de seguimiento académico para la asignatura seleccionada. '
+      + 'Desde este panel se puede revisar la matrícula del alumno/a, comprobar el estado actual '
+      + 'de su calificación y modificar la nota antes de guardarla definitivamente en CentroEducativo. '
+      + 'La información mostrada sirve como apoyo para evitar cambios accidentales y mantener claro '
+      + 'el contexto de evaluación.';
+
+    function estadoNota(nota) {
+      var n = parseNotaNum(nota);
+      if (isNaN(n)) return { cls: 'nol-pill--wait', txt: 'Pendiente' };
+      if (n >= 5)   return { cls: 'nol-pill--ok', txt: 'Aprobado' };
+      return { cls: 'nol-pill--review', txt: 'Suspenso' };
+    }
 
     function pintarFicha() {
       if (!alumnos.length) return;
       var a = alumnos[idx];
       var dni = getDniAlumno(a);
+      var nota = getNotaAlumno(a);
 
       setText('fichaNombre', getNombreAlumno(a));
       setText('fichaDni', dni);
       setText('fichaMatricula', 'Matriculado/a en: ' + (acronimo || '—'));
       setText('fichaRelleno', RELLENO);
 
+      var est = estadoNota(nota);
+      var pill = document.getElementById('fichaEstado');
+      pill.textContent = est.txt;
+      pill.className = 'nol-pill ' + est.cls;
+
+      setText('fichaUltMod', a._ultMod || (isNaN(parseNotaNum(nota)) ? 'Sin registrar' : 'Calificación registrada'));
+
       var foto = document.getElementById('fichaFoto');
       foto.onerror = function () { this.onerror = null; this.src = FOTO_PLACEHOLDER; };
       foto.src = fotoUrl(dni);
 
       var input = document.getElementById('fichaNota');
-      var nota = getNotaAlumno(a);
       input.value = (nota === '' || nota === null || nota === undefined) ? '' : nota;
 
       setText('contador', 'Alumno/a ' + (idx + 1) + ' de ' + alumnos.length);
@@ -101,8 +135,12 @@
       document.getElementById('btnNext').disabled = (idx === alumnos.length - 1);
     }
 
-    function actualizarMedia() {
+    function actualizarResumen() {
+      var r = calcMedia(alumnos);
       setText('mediaBadge', 'Nota media: ' + textoMedia(alumnos));
+      setText('resMat', r.total);
+      setText('resCal', r.calificados);
+      setText('resPen', r.total - r.calificados);
     }
 
     function mover(delta) {
@@ -135,7 +173,9 @@
       }).then(function (data) {
         // Refleja el cambio en memoria para recalcular la media al instante.
         a.nota = nota;
-        actualizarMedia();
+        a._ultMod = 'Modificada ahora · ' + new Date().toLocaleString('es-ES');
+        actualizarResumen();
+        pintarFicha();
 
         var mensaje = (data && data.mensaje) ? data.mensaje : 'Nota actualizada correctamente.';
         okBox.textContent = mensaje;
@@ -148,6 +188,7 @@
 
       if (!alumnos.length) {
         document.getElementById('vacioBox').classList.remove('d-none');
+        setText('resMat', 0); setText('resCal', 0); setText('resPen', 0);
         return;
       }
 
@@ -163,7 +204,7 @@
       });
 
       idx = 0;
-      actualizarMedia();
+      actualizarResumen();
       pintarFicha();
     }
 
