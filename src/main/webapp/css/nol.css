@@ -58,7 +58,7 @@ main.container { max-width: 1180px; }
 a { color: var(--nol-red); text-decoration: none; }
 a:hover { color: var(--nol-red-dark); text-decoration: underline; }
 
-/* ---------- Navbar institucional ---------- */
+/* ---------- Navbar ---------- */
 .navbar {
   background: linear-gradient(90deg, var(--nol-red-dark), var(--nol-red)) !important;
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.18);
@@ -117,7 +117,7 @@ a:hover { color: var(--nol-red-dark); text-decoration: underline; }
   border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
-/* ---------- Chips / badges ---------- */
+/* ---------- badges ---------- */
 .nol-chip {
   display: inline-flex; align-items: center; gap: 0.4rem;
   padding: 0.34rem 0.7rem;
@@ -138,7 +138,7 @@ a:hover { color: var(--nol-red-dark); text-decoration: underline; }
   font-weight: 750; font-size: 0.85rem;
 }
 
-/* ---------- Píldoras de estado ---------- */
+/* ---------- Píll ---------- */
 .nol-pill {
   display: inline-flex; align-items: center; gap: 0.35rem;
   padding: 0.22rem 0.6rem;
@@ -184,7 +184,7 @@ a:hover { color: var(--nol-red-dark); text-decoration: underline; }
 }
 .nol-page-title { font-weight: 850; letter-spacing: -0.02em; }
 
-/* ---------- Stat tiles (resúmenes superiores) ---------- */
+/* ---------- resúmenes superiores ---------- */
 .nol-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -215,7 +215,7 @@ a:hover { color: var(--nol-red-dark); text-decoration: underline; }
 }
 .nol-stat .nol-stat-sub { font-size: 0.78rem; color: var(--nol-muted); }
 
-/* ---------- Bloques de información / ficha ---------- */
+/* ---------- info ---------- */
 .nol-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -234,7 +234,7 @@ a:hover { color: var(--nol-red-dark); text-decoration: underline; }
 dl.row dt { color: var(--nol-ink-soft); font-weight: 800; }
 dl.row dd { color: var(--nol-ink); }
 
-/* ---------- Detalle: fila ficha + recuadro de nota ---------- */
+/* ---------- detalle ---------- */
 .nol-detalle-grid {
   display: flex;
   flex-wrap: wrap;
@@ -294,7 +294,7 @@ dl.row dd { color: var(--nol-ink); }
   grid-template-columns: repeat(4, 1fr);
   gap: 0.85rem;
 }
-/* 4 → 2 (nunca 3+1) → 1 al estrechar la pantalla */
+	/*--- Dividir de 2 en 2 los servicios ---*/
 @media (max-width: 992px) {
   .nol-services { grid-template-columns: repeat(2, 1fr); }
 }
@@ -414,7 +414,7 @@ label.form-label { font-weight: 700; color: var(--nol-ink-soft); }
   background: var(--nol-neutral-bg); box-shadow: var(--nol-shadow-soft);
 }
 
-/* ---------- Footer institucional ---------- */
+/* ---------- Footer ---------- */
 .nol-footer {
   margin-top: 2rem;
   border-top: 3px solid var(--nol-red);
@@ -448,7 +448,7 @@ label.form-label { font-weight: 700; color: var(--nol-ink-soft); }
   .nol-nota-box { width: 100%; }
 }
 
-/* ---------- Impresión (expediente) ---------- */
+/* ---------- Impresión ---------- */
 @media print {
   body { background: #fff !important; }
   .no-print, nav, .btn, #errorBox, #okBox, .nol-footer { display: none !important; }
