@@ -9,5 +9,5 @@
         configurada, en ese caso redirige a esta página en lugar de fallar.
     -->
     <Valve className="org.apache.catalina.authenticator.FormAuthenticator"
-           landingPage="/DEW/index.html" />
+           landingPage="/NOL/index.html" />
 </Context>
