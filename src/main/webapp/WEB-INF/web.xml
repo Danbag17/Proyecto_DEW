@@ -221,8 +221,6 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
   		<location>/ErrorHandler</location>
 	</error-page>
 	
-	
-	
 	<error-page>
 	    <error-code>403</error-code>
 	    <location>/ErrorHandler</location>
@@ -232,27 +230,5 @@ https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0
 	    <error-code>500</error-code>
 	    <location>/ErrorHandler</location>
 	</error-page>
-
-    <!-- ===================== PAGINAS DE ERROR ===================== -->
-
-    <error-page>
-        <error-code>401</error-code>
-        <location>/error/401.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>403</error-code>
-        <location>/error/403.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>404</error-code>
-        <location>/error/404.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>500</error-code>
-        <location>/error/500.html</location>
-    </error-page>
 
 </web-app>
