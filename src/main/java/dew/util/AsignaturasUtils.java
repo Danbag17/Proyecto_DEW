@@ -21,22 +21,9 @@ public final class AsignaturasUtils {
     private AsignaturasUtils() {
     }
 
-    /**
-     * Devuelve el JSON de matrículas enriquecido con los datos del catálogo.
-     *
-     * Para cada matrícula se rellenan (sin sobrescribir lo que ya venga) los campos
-     * creditos, nombre, curso y cuatrimestre tomados de la asignatura del catálogo
-     * cuyo acrónimo coincide con el de la matrícula.
-     *
-     * @param matriculasJson JSON (array) devuelto por /alumnos/{dni}/asignaturas
-     * @param catalogoJson   JSON (array) devuelto por /asignaturas
-     * @return JSON (array) de matrículas con los datos académicos añadidos
-     */
+ 
     public static String enriquecerConCatalogo(String matriculasJson, String catalogoJson) {
 
-        // El enriquecido es una mejora (mostrar créditos): si algo va mal al parsear
-        // o cruzar, devolvemos la matrícula original sin romper la página. Los créditos
-        // degradan a "—" pero el expediente/listado sigue funcionando.
         try {
             return cruzar(matriculasJson, catalogoJson);
         } catch (RuntimeException e) {

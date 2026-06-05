@@ -64,7 +64,7 @@
 
   <script src="../js/api.js"></script>
   <script>
-    // Estado de la nota a partir del valor (contenido coherente, no inventado).
+    // Estado de la nota a partir del valor.
     function estadoNota(nota) {
       var n = parseNotaNum(nota);
       if (isNaN(n)) return { cls: 'nol-pill--wait', txt: 'Pendiente' };
