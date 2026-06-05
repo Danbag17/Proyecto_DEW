@@ -46,7 +46,7 @@ public class LogoutServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        response.sendRedirect(request.getContextPath() + "/index-v2.html?logout=1");
+        response.sendRedirect(request.getContextPath() + "/index.html?logout=1");
     }
 
     @Override

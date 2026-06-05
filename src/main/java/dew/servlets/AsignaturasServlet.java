@@ -35,8 +35,9 @@ public class AsignaturasServlet extends HttpServlet {
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(json);
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error obteniendo asignaturas: " + e.getMessage());
+                    "Error interno del servidor");
         }
     }
 }

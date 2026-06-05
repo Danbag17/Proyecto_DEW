@@ -79,9 +79,14 @@ function ajax(url, options) {
     }
 
     if (!response.ok) {
-      return response.text().then(function (text) {
-        throw new Error(response.status + ' ' + response.statusText + ' ' + text);
-      });
+      var msg;
+      switch (response.status) {
+        case 400: msg = 'La solicitud no es válida. Revisa los datos e inténtalo de nuevo.'; break;
+        case 404: msg = 'No se han encontrado los datos solicitados.'; break;
+        case 500: msg = 'Ha ocurrido un error en el servidor. Inténtalo de nuevo más tarde.'; break;
+        default:  msg = 'No se ha podido completar la operación (error ' + response.status + ').';
+      }
+      throw new Error(msg);
     }
 
     var contentType = response.headers.get('content-type') || '';

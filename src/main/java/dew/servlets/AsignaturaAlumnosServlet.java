@@ -48,8 +48,9 @@ public class AsignaturaAlumnosServlet extends HttpServlet {
 
             writeJson(response, enriquecido);
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error obteniendo alumnos de la asignatura: " + e.getMessage());
+                    "Error interno del servidor");
         }
     }
 

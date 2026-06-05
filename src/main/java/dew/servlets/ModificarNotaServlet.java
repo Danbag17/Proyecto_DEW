@@ -57,8 +57,9 @@ public class ModificarNotaServlet extends HttpServlet {
             response.getWriter().write(
                     "{\"ok\":true,\"mensaje\":\"Nota modificada correctamente\"}");
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error modificando nota: " + e.getMessage());
+                    "Error interno del servidor");
         }
     }
 
