@@ -28,7 +28,7 @@ set -u
 #     intenta crear (se ignora el error si ya existe).
 # ============================================================
 
-API_URL="${API_URL:-http://localhost:9090/CentroEducativo}"
+API_URL="${API_URL:-http://172.23.189.79:9090/CentroEducativo}"
 
 ADMIN_DNI="111111111"
 ADMIN_PASS="654321"
