@@ -16,6 +16,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 public class AuthFilter implements Filter {
@@ -99,40 +100,53 @@ public class AuthFilter implements Filter {
     	    return;
     	}
         
-        if (!SessionsUtils.isLoggedIn(req)) {
-            String loginTomcat = req.getRemoteUser();
+    	CentroEducativoClient ce = new CentroEducativoClient();
 
-            if (loginTomcat == null) {
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario no autenticado en Tomcat");
-                return;
-            }
+    	boolean necesitaLoginCentroEducativo = !SessionsUtils.isLoggedIn(req);
 
-            Credentials credentials = USERS.get(loginTomcat);
+    	if (!necesitaLoginCentroEducativo) {
+    	    String keyActual = SessionsUtils.getKey(req);
 
-            if (credentials == null) {
-                res.sendError(HttpServletResponse.SC_FORBIDDEN,
-                        "Usuario Tomcat sin equivalencia definida en CentroEducativo: " + loginTomcat);
-                return;
-            }
+    	    if (!ce.isKeyValid(keyActual)) {
+    	        necesitaLoginCentroEducativo = true;
+    	    }
+    	}
 
-            try {
-            	//CentroEducativoClient.clearCookieJar();
-            	
-                String key = new CentroEducativoClient().login(credentials.dni, credentials.password);
+    	if (necesitaLoginCentroEducativo) {
+    	    String loginTomcat = req.getRemoteUser();
 
-                if (key == null || key.isBlank() || "-1".equals(key.trim())) {
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                            "CentroEducativo no ha devuelto una key válida");
-                    return;
-                }
+    	    if (loginTomcat == null) {
+    	        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario no autenticado en Tomcat");
+    	        return;
+    	    }
 
-                SessionsUtils.createUserSession(req, credentials.dni, credentials.password, key.trim());            
-            	
-                
-            	} catch (Exception e) {
-            		throw new ServletException("Error autenticando contra CentroEducativo", e);
-            	}
-        }
+    	    Credentials credentials = USERS.get(loginTomcat);
+
+    	    if (credentials == null) {
+    	        res.sendError(HttpServletResponse.SC_FORBIDDEN,
+    	                "Usuario Tomcat sin equivalencia definida en CentroEducativo: " + loginTomcat);
+    	        return;
+    	    }
+
+    	    try {
+    	        CentroEducativoClient.clearCookieJar();
+
+    	        String key = ce.login(credentials.dni, credentials.password);
+
+    	        if (key == null || key.isBlank() || "-1".equals(key.trim())) {
+    	            SessionsUtils.invalidateSession(req);
+    	            res.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+    	                    "CentroEducativo no ha devuelto una key válida");
+    	            return;
+    	        }
+
+    	        SessionsUtils.createUserSession(req, credentials.dni, credentials.password, key.trim());
+
+    	    } catch (Exception e) {
+    	        SessionsUtils.invalidateSession(req);
+    	        throw new ServletException("Error autenticando contra CentroEducativo", e);
+    	    }
+    	}
 
         chain.doFilter(request, response);
     }
