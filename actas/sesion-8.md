@@ -3,7 +3,7 @@
 **Asignatura:** Desarrollo Web (DEW) – Curso 2025/2026
 **Grupo:** G14 – 3TI21
 **Reunión nº:** 8
-**Fecha:** 02/06/2026 y 03/06/2026
+**Fecha:** 02/06/2026 y 05/06/2026
 **Hora:** Coordinación continua mediante WhatsApp, GitHub y Eclipse
 **Lugar:** Trabajo remoto colaborativo
 **Secretaria:** Vanesa Carolina Castro Bello
